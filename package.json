@@ -35,11 +35,12 @@
     "README.md"
   ],
   "keywords": [
-    "node-red",
     "homie",
     "node-homie",
     "homie-homecontrol",
-    "smarthome"
+    "smarthome",
+    "mqtt",
+    "iot"
   ],
   "author": {
     "name": "schaze",
