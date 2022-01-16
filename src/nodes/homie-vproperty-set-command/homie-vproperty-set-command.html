@@ -1,0 +1,135 @@
+<script type="text/javascript">
+    RED.nodes.registerType('homie-vproperty-set-command', {
+        category: 'homie',
+        color: '#00796b',
+        defaults: {
+            deviceCfg: { value: "", type: "homie-vdevice-config", required: "true" },
+            name: { value: "" },
+            node: { value: "" },
+            property: { value: "" }
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: "font-awesome/fa-caret-right",
+        paletteLabel: 'vprop /set',
+        outputLabels: ["/set command value"],
+        align: 'left',
+        label: function () {
+            return this.name || this.property || "homie-vproperty-set-command";
+        },
+        oneditprepare: function () {
+            const node = this;
+
+            function getLabel(item) {
+                if (item.label) {
+                    return `${item.label} (${item.value})`;
+                } else {
+                    return item.value;
+                }
+            }
+
+            function updateSelectionList(attrId, list, value) {
+                const selectionListElem = $(`#node-input-${attrId}`);
+                if (!selectionListElem) { return; }
+
+                // Clear element
+                selectionListElem.children().remove();
+
+                list.forEach(item => {
+                    if (item.value !== value) {
+                        selectionListElem.append('<option value="' + item.value + '">' + getLabel(item) + '</option>');
+                    } else {
+                        selectionListElem.append('<option value="' + item.value + '" selected="true">' + getLabel(item) + '</option>');
+                    }
+                });
+                selectionListElem.val(value);
+
+            }
+
+
+            function updateNodesList(node) {
+                const vDeviceCfgNode = $("#node-input-deviceCfg").find(":selected").val();
+                $.getJSON("nodeHomie/vNodesList", { vDeviceCfgNode})
+                    .done(function (data) {
+                        updateSelectionList(
+                            'node',
+                            data.map(node => { return { value: node.id, label: node.name } }),
+                            $("#node-input-node").val() || node.node
+                        );
+
+                    });
+            }
+
+            function updatePropertiesList(node) {
+                const vDeviceCfgNode = $("#node-input-deviceCfg").find(":selected").val();
+                const nodeId = $("#node-input-node").val() || node.node;
+                $.getJSON("nodeHomie/vPropertiesList", { vDeviceCfgNode, nodeId })
+                    .done(function (data) {
+                        updateSelectionList(
+                            'property',
+                            data.map(prop => { return { value: prop.pointer, label: prop.name } }),
+                            $("#node-input-property").val() || node.property
+                        );
+
+                    });
+            }
+
+            $('#node-input-deviceCfg').change(function (ev) { // update device list if homieCfg is changed
+                updateNodesList(node);
+                updatePropertiesList(node);
+            });
+
+            $('#node-input-node').change(function (ev) { // update nodes list if homieCfg is changed
+                updatePropertiesList(node);
+            });
+
+        }
+    });
+
+
+
+
+
+</script>
+
+<script type="text/html" data-template-name="homie-vproperty-set-command">
+    <style type="text/css">
+        .form-row select {
+          width: 70%;
+        }
+
+      </style>
+
+    <div class="form-row">
+        <label for="node-input-deviceCfg"><i class="fa fa-tag"></i> Select Device</label>
+        <input type="text" id="node-input-deviceCfg" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-node"><i class="fa fa-tag"></i> Node</label>
+        <select  id="node-input-node" placeholder="Name"></select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-property"><i class="fa fa-tag"></i> Property</label>
+        <select  id="node-input-property" placeholder="Name"></select>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="homie-vproperty-set-command">
+    <p>Emits  when a message is published under the virtual device's property '/set' topic.</p>
+    <h3>Output</h3>
+    <p>Message with /set value that was send to the device via mqtt.</p>
+    <p>
+        Outgoing messages include the /set value as payload and a topic and property field with the property path:
+   </p>
+    <pre><code>
+    {
+        "payload": "true",
+        "topic": "lamp-1/switch/state",
+        "property": "lamp-1/switch/state"
+    }
+    </code></pre>
+</script>

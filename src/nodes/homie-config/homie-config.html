@@ -1,0 +1,70 @@
+<script type="text/javascript">
+    RED.nodes.registerType('homie-config', {
+        category: 'config',
+        color: '#00796b',
+        defaults: {
+            name: { value: "" },
+            mqttUrl: { value: 'mqtt://localhost:1883', required: true },
+            homieRoot: { value: 'homie' }
+        },
+        credentials: {
+            username: { type: "text" },
+            password: { type: "password" }
+        },
+        inputs: 1,
+        outputs: 1,
+        label: function () {
+            return this.name || "homie-config";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="homie-config">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-mqttUrl"><i class="fa fa-tag"></i> MQTT Url</label>
+        <input type="text" id="node-config-input-mqttUrl" placeholder="MQTT Url">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-homieRoot"><i class="fa fa-tag"></i> Homie topic root</label>
+        <input type="text" id="node-config-input-homieRoot" placeholder="homieRoot">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-username"><i class="fa fa-tag"></i> Username</label>
+        <input type="text" id="node-config-input-username">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-password"><i class="fa fa-tag"></i> Password</label>
+        <input type="password" id="node-config-input-password">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="homie-config">
+    <p>Here you specify the connection to your mqtt broker.
+        Please not that also for controller mode the user needs publish rights at least for the properties <code>homie/&lt;device&gt;/&lt;node&gt;/&lt;property&gt;/set</code> topic.</p>
+        <p>Please find the documentation for the fields below:</p>
+        <p><strong>Name</strong></p>
+        <ul>
+        <li>name of the configuration node</li>
+        </ul>
+        <p><strong>MQTT Url</strong></p>
+        <ul>
+        <li>the connection address of the mqtt broker. This can be a <code>mqtt://</code> protocol address or <code>ws://</code> | <code>wss://</code> address depending on you scenario. If no port is specified defaults will be assumed. (mqtt: 1883, ws: 80, wss: 443)</li>
+        </ul>
+        <p><strong>Homie topic root</strong></p>
+        <ul>
+        <li>MQTT topic under which all homie devices are published. By convention this defaults to <code>homie</code>, however for your testing or developing reasons this can be changed here as not to disturb productive usage.</li>
+        </ul>
+        <p><strong>Username</strong></p>
+        <ul>
+        <li>Username for the MQTT connection. If the MQTT broker is unsecured this can be left empty.</li>
+        </ul>
+        <p><strong>Password</strong></p>
+        <ul>
+        <li>Password for the MQTT connection. If the MQTT broker is unsecured this can be left empty.</li>
+        </ul>
+        
+</script>

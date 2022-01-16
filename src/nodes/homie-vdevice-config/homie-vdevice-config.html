@@ -1,0 +1,1159 @@
+<script type="text/javascript">
+    RED.nodes.registerType('homie-vdevice-config', {
+        category: 'config',
+        color: '#00796b',
+        defaults: {
+            homieCfg: { value: "", type: "homie-config" },
+            name: { value: "" },
+            deviceSpecStr: {
+                value: "", required: "true",
+            },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-circle",
+        label: function () {
+            return this.name || "homie-virtual-device";
+        },
+        oneditprepare: function () {
+            const node = this;
+
+            $("#node-config-input-deviceSpecStr").typedInput({
+                type: "json",
+                types: ["json"]
+            })
+        },
+        oneditsave: function () {
+            $.post("nodeHomie/validateVDevice", { data: $("#node-config-input-deviceSpecStr").val() }, 'application/json')
+                .done((result) => {
+                    if (!result.valid) {
+                        RED.notify(`${this.name} - Error in device spec.<br/><pre>${JSON.stringify(result.validationErrors, undefined, 2)}</pre>`, { type: 'error' });
+                    }
+
+                });
+        }
+    });
+
+
+
+
+
+</script>
+
+<script type="text/html" data-template-name="homie-vdevice-config">
+    <style type="text/css">
+        .form-row select {
+          width: 70%;
+        }
+
+      </style>
+
+    <div class="form-row">
+        <label for="node-config-input-homieCfg"><i class="fa fa-tag"></i> Homie Config</label>
+        <input type="text" id="node-config-input-homieCfg" placeholder="Homie Config">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-deviceSpecStr"><i class="fa fa-tag"></i> Select Device</label>
+        <input type="text"  id="node-config-input-deviceSpecStr" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="homie-vdevice-config">
+    <p>A configuration node that creates a virtual device owned by nodered.
+        The specification of a device is to complex to build a nice user interface around it. Therefor the spec has to be provided as JSON input. The datamodel is more or less straight forward with some specials to it.
+        In general you can more or less model the devices, nodes and properties as they would be published via the mqtt topic structure with the following differences:</p>
+        <ul>
+        <li>attributes are written without the &quot;$&quot; prefix for ease of use (<code>name</code> instead of <code>$name</code>)</li>
+        <li>to specify nodes and propterties use the <code>nodes</code> and <code>properties</code> fields instead of $nodes &amp; $properties.</li>
+        <li>id have to be specified as fields and nodes and properties are arrays (lists) instead of <code>dictionaries/maps</code> like you would expect in the topic hierarchy.</li>
+        </ul>
+        <p><strong>Explanation</strong></p>
+        <p>This will show the tree structure level by level.</p>
+        <p>Device:</p>
+        <pre><code class="lang-yaml">
+id: deviceId
+name: device name
+nodes:
+  -<span class="ruby"> node1</span>
+  -<span class="ruby"> node2</span>
+  -<span class="ruby"> node3</span>
+        </code>
+    </pre>
+        <p>For each node:</p>
+        <pre><code class="lang-yaml">
+        id: nodeId
+        name: <span class="hljs-keyword">node</span> <span class="hljs-title">name</span>
+        <span class="hljs-keyword">type</span>: <span class="hljs-keyword">node</span> <span class="hljs-title">type</span>
+        properties:
+            - property1
+            - property2
+            - property3
+        </code></pre>
+        <p>For each property:</p>
+        <pre><code class="lang-yaml"><span class="hljs-built_in">
+        id</span>: propertyId
+        <span class="hljs-built_in">name</span>: <span class="hljs-keyword">property</span> <span class="hljs-built_in">name</span>
+        datatype: <span class="hljs-built_in">boolean</span>
+        settable: <span class="hljs-literal">true</span>
+        </code></pre>
+        <p>All together this looks like this:</p>
+        <pre><code class="lang-yaml">
+        id: deviceId
+        name: device name
+        nodes:
+            - id: nodeId
+              name: <span class="hljs-keyword">node</span> <span class="hljs-title">name</span>
+              <span class="hljs-keyword">type</span>: <span class="hljs-keyword">node</span> <span class="hljs-title">type</span>
+              properties:
+                - id: propertyId
+                  name: <span class="hljs-keyword">property</span><span class="hljs-title"> </span>name
+                  datatype: boolean
+                  settable: <span class="hljs-literal">true</span>
+                - id: propertyId
+                  name: <span class="hljs-keyword">property</span><span class="hljs-title"> </span>name
+                  datatype: boolean
+                  settable: <span class="hljs-literal">true</span>
+            - id: nodeId
+              name: <span class="hljs-keyword">node</span> <span class="hljs-title">name</span>
+              <span class="hljs-keyword">type</span>: <span class="hljs-keyword">node</span> <span class="hljs-title">type</span>
+              properties:
+                - id: propertyId
+                  name: <span class="hljs-keyword">property</span><span class="hljs-title"> </span>name
+                  datatype: boolean
+                  settable: <span class="hljs-literal">true</span>
+                - id: propertyId
+                  name: <span class="hljs-keyword">property</span><span class="hljs-title"> </span>name
+                  datatype: boolean
+                  settable: <span class="hljs-literal">true</span>
+        </code></pre>
+        <p>Below you find an actual JSON example that can be used directly for testing.</p>
+        <pre><code class="lang-json">{
+            <span class="hljs-attr">"id"</span>: <span class="hljs-string">"node-red-virtual-device-1"</span>,
+            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Virtual a test device"</span>,
+            <span class="hljs-attr">"nodes"</span>: [
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"switch"</span>,
+                    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Virtual switch"</span>,
+                    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"virtual-switch"</span>,
+                    <span class="hljs-attr">"properties"</span>: [
+                        {
+                            <span class="hljs-attr">"id"</span>: <span class="hljs-string">"state"</span>,
+                            <span class="hljs-attr">"datatype"</span>: <span class="hljs-string">"boolean"</span>,
+                            <span class="hljs-attr">"passThrough"</span>: <span class="hljs-literal">false</span>,
+                            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Virtual switch state"</span>,
+                            <span class="hljs-attr">"settable"</span>: <span class="hljs-literal">true</span>,
+                            <span class="hljs-attr">"propertyOpts"</span>: {
+                                <span class="hljs-attr">"readValueFromMqtt"</span>: <span class="hljs-literal">true</span>
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+        </code></pre>
+        <p>The resulting device on mqtt will then look like the following:
+        <img src="docs/media/virtual-device-mqtt-explorer.png" alt="virtual-device-mqtt-explorer"></p>
+        <p><strong>General note</strong>
+        The following fields should not be specified, or have no effect:</p>
+        <p>Device:</p>
+        <ul>
+        <li>state</li>
+        <li>homie</li>
+        <li>extensions</li>
+        <li>nodes</li>
+        </ul>
+        <p>Node:</p>
+        <ul>
+        <li>properties</li>
+        </ul>
+        <p>Property:</p>
+        <ul>
+        <li>n/a</li>
+        </ul>
+        <p>As you can see in the example above there are a few extra configuration options that can be used. Below you can find them listed by homie structure element.</p>
+        <p><strong>Node level extra configuration</strong></p>
+        <p><code>passThrough</code> (boolean, default <code>false</code>): </p>
+        <ul>
+        <li><p>when set to <code>true</code>, all properties below this node will &#39;autoconfirm&#39; /set messages sent to them. Which means they will simply update their value state with the value sent to /set. </p>
+        </li>
+        <li><p>when set to <code>false</code>, you have to take care to update the property value in your flow yourself using the <code>vprop value (homie-vproperty-value-update)</code> (TODO:LINK) node.</p>
+        </li>
+        </ul>
+        <p><code>fromSmarthome</code> (object):</p>
+        <ul>
+        <li>node-homie-red uses the <code>node-homie</code> and <code>hc-node-homie-smarthome</code> libraries under the hood. The later one defines a set of standard node types for smarthome usage in the homie-homecontrol smarthome system. This option offers easy specification of these default nodes in your devices. For more details see the section <a href="#reference-smarthome-spec">Smarthome Spec</a>.</li>
+        </ul>
+        <p><strong>Property level extra configuration</strong></p>
+        <p><code>passThrough</code> (boolean, default <code>false</code>): </p>
+        <ul>
+        <li><p>when set to <code>true</code>, all the property will &#39;autoconfirm&#39; /set messages sent to them. Which means it will simply update it&#39;s value state with the value sent to /set. </p>
+        </li>
+        <li><p>when set to <code>false</code>, you have to take care to update the property value in your flow yourself using the <code>vprop value (homie-vproperty-value-update)</code> (TODO:LINK) node.</p>
+        </li>
+        <li><p>this will overwrite any setting on node level per property</p>
+        </li>
+        </ul>
+        <p><code>propertyOpts</code> (object, default <code>{ &quot;readValueFromMqtt&quot;: true, &quot;readTimeout&quot;: 3000 }</code>):</p>
+        <ul>
+        <li><p>node-homie offers to read the current value of a property from mqtt when creating the device. Basically using mqtt as persistent storage itself. This is useful to retain the last value of the property in case of a Node-RED restart for example. </p>
+        <blockquote>
+        <p>TODO: maybe provide a value field in the spec to always initialize with a static value.</p>
+        </blockquote>
+        </li>
+        <li><p><code>readValueFromMqtt</code>: Default is to read the last value in on device initialization - if you set this to false make sure to take of setting the inital value for the property after a Node-RED restart.</p>
+        </li>
+        <li><code>readTimeout</code>: max time in milliseconds to wait for a message to be received from mqtt for the property topic. Please note for new empty properties this leads to a delay of <code>readTimeout</code> milliseconds before the device finishes intializing (transitions to state ready).</li>
+        <li>data format:<pre><code class="lang-json">  {
+              <span class="hljs-attr">"readValueFromMqtt"</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-attr">"readTimeout"</span>: <span class="hljs-number">3000</span>
+          }
+        </code></pre>
+        </li>
+        </ul>
+        <p><a name="reference-smarthome-spec"></a>
+        <strong>Smarthome Spec</strong></p>
+        <p>The smarthome spec offers quick definition of nodes and properties according to the homie-homecontrol smarthome node definition without having to specify every single property manually.</p>
+        <blockquote>
+        <p>TODO: Link hc-node-homie-smarthome repo readme here after publishing.</p>
+        </blockquote>
+        <p>For example, if you only need a simple switch the following device spec:</p>
+        <pre><code class="lang-json">{
+            <span class="hljs-attr">"id"</span>: <span class="hljs-string">"node-red-virtual-device-2"</span>,
+            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Virtual switch device"</span>,
+            <span class="hljs-attr">"nodes"</span>: [
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"switch"</span>,
+                    <span class="hljs-attr">"fromSmarthome"</span>: {
+                        <span class="hljs-attr">"type"</span>: <span class="hljs-string">"homie-homecontrol/v1/type=switch"</span>
+                    }
+                }
+            ]
+        }
+        </code></pre>
+        <p>Would result in a device with the following properties:
+        <img src="docs/media/from-smarthome-example.png" alt="from-smarthome-example"></p>
+        <pre><code class="lang-json">{
+            <span class="hljs-string">"type"</span>: <span class="hljs-string">"homie-homecontrol/v1/type=&lt;typename&gt;"</span>,
+            <span class="hljs-string">"config"</span>: {
+                // typespecific <span class="hljs-keyword">node</span> <span class="hljs-title">configuration</span>
+            }
+        }
+        </code></pre>
+        <p><code>type</code></p>
+        <ul>
+        <li>The following types are supported:<ul>
+        <li><code>homie-homecontrol/v1/type=battery</code></li>
+        <li><code>homie-homecontrol/v1/type=switch</code></li>
+        <li><code>homie-homecontrol/v1/type=contact</code></li>
+        <li><code>homie-homecontrol/v1/type=weather</code></li>
+        <li><code>homie-homecontrol/v1/type=button</code></li>
+        <li><code>homie-homecontrol/v1/type=tiltsensor</code></li>
+        <li><code>homie-homecontrol/v1/type=motionsensor</code></li>
+        <li><code>homie-homecontrol/v1/type=thermostat</code></li>
+        <li><code>homie-homecontrol/v1/type=mediaplayer</code></li>
+        <li><code>homie-homecontrol/v1/type=powermeter</code></li>
+        <li><code>homie-homecontrol/v1/type=maintenance</code></li>
+        <li><code>homie-homecontrol/v1/type=dimmer</code></li>
+        <li><code>homie-homecontrol/v1/type=shutter</code></li>
+        <li><code>homie-homecontrol/v1/type=colorlight</code></li>
+        <li><code>homie-homecontrol/v1/type=text</code></li>
+        </ul>
+        </li>
+        </ul>
+        <p><code>config</code></p>
+        <ul>
+        <li>Each type has it&#39;s own configuration. for more details see the hc-node-homie-smarthome repo<blockquote>
+        <p>TODO: Link</p>
+        </blockquote>
+        </li>
+        </ul>
+        <p><strong><em>Overriding or extending on default nodes</em></strong></p>
+        <p>You can still provide a <code>properties</code> field in combination with <code>fromSmarthome</code>. Any matching property ids will overwrite the default ones where supported. You can also extend the node with additional properties (however then it is not adhering to the standard any more)</p>
+        
+    <h1 id="Technical spec of data objects">Technical details of Virtual Device Spec</h1>
+    <p><strong><em>Properties</em></strong></p>
+    <ul>
+    <li><b id="#/properties/id">id</b> <code>required</code><ul>
+    <li><i id="#/properties/id">path: #/properties/id</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomieID">#/definitions/HomieID</a></li>
+    </ul>
+    </li>
+    <li><b id="#/properties/name">name</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/properties/name">path: #/properties/name</i></li>
+    </ul>
+    </li>
+    <li><b id="#/properties/tags">tags</b><ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/properties/tags">path: #/properties/tags</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/properties/tags/items">path: #/properties/tags/items</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li><b id="#/properties/meta">meta</b><ul>
+    <li><i id="#/properties/meta">path: #/properties/meta</i></li>
+    <li>&#36;ref: <a href="#/definitions/MetaAttributes">#/definitions/MetaAttributes</a></li>
+    </ul>
+    </li>
+    <li><b id="#/properties/nodes">nodes</b> <code>required</code><ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/properties/nodes">path: #/properties/nodes</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li><i id="#/properties/nodes/items">path: #/properties/nodes/items</i></li>
+    <li>&#36;ref: <a href="#/definitions/VirtualNodeSpec">#/definitions/VirtualNodeSpec</a></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <h2 id="virtualnodespec">VirtualNodeSpec</h2>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/VirtualNodeSpec">path: #/definitions/VirtualNodeSpec</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/VirtualNodeSpec/properties/id">id</b> <code>required</code><ul>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/id">path: #/definitions/VirtualNodeSpec/properties/id</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomieID">#/definitions/HomieID</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualNodeSpec/properties/name">name</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/name">path: #/definitions/VirtualNodeSpec/properties/name</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualNodeSpec/properties/tags">tags</b><ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/tags">path: #/definitions/VirtualNodeSpec/properties/tags</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/tags/items">path: #/definitions/VirtualNodeSpec/properties/tags/items</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualNodeSpec/properties/meta">meta</b><ul>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/meta">path: #/definitions/VirtualNodeSpec/properties/meta</i></li>
+    <li>&#36;ref: <a href="#/definitions/MetaAttributes">#/definitions/MetaAttributes</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualNodeSpec/properties/type">type</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/type">path: #/definitions/VirtualNodeSpec/properties/type</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualNodeSpec/properties/properties">properties</b><ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/properties">path: #/definitions/VirtualNodeSpec/properties/properties</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/properties/items">path: #/definitions/VirtualNodeSpec/properties/properties/items</i></li>
+    <li>&#36;ref: <a href="#/definitions/VirtualPropertySpec">#/definitions/VirtualPropertySpec</a></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualNodeSpec/properties/fromSmarthome">fromSmarthome</b><ul>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/fromSmarthome">path: #/definitions/VirtualNodeSpec/properties/fromSmarthome</i></li>
+    <li>&#36;ref: <a href="#/definitions/SmarthomeSpec">#/definitions/SmarthomeSpec</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualNodeSpec/properties/passThrough">passThrough</b><ul>
+    <li><i id="#/definitions/VirtualNodeSpec/properties/passThrough">path: #/definitions/VirtualNodeSpec/properties/passThrough</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <h2 id="virtualpropertyspec">VirtualPropertySpec</h2>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/VirtualPropertySpec">path: #/definitions/VirtualPropertySpec</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/id">id</b> <code>required</code><ul>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/id">path: #/definitions/VirtualPropertySpec/properties/id</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomieID">#/definitions/HomieID</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/name">name</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/name">path: #/definitions/VirtualPropertySpec/properties/name</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/tags">tags</b><ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/tags">path: #/definitions/VirtualPropertySpec/properties/tags</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/tags/items">path: #/definitions/VirtualPropertySpec/properties/tags/items</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/meta">meta</b><ul>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/meta">path: #/definitions/VirtualPropertySpec/properties/meta</i></li>
+    <li>&#36;ref: <a href="#/definitions/MetaAttributes">#/definitions/MetaAttributes</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/datatype">datatype</b><ul>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/datatype">path: #/definitions/VirtualPropertySpec/properties/datatype</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomieDatatype">#/definitions/HomieDatatype</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/format">format</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/format">path: #/definitions/VirtualPropertySpec/properties/format</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/settable">settable</b><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/settable">path: #/definitions/VirtualPropertySpec/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/retained">retained</b><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/retained">path: #/definitions/VirtualPropertySpec/properties/retained</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/unit">unit</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/unit">path: #/definitions/VirtualPropertySpec/properties/unit</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/passThrough">passThrough</b><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/passThrough">path: #/definitions/VirtualPropertySpec/properties/passThrough</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/VirtualPropertySpec/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/VirtualPropertySpec/properties/propertyOpts">path: #/definitions/VirtualPropertySpec/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <h2 id="further-type-definitions">Further type definitions</h2>
+    <p><strong><em>HomieID</em></strong></p>
+    <ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/HomieID">path: #/definitions/HomieID</i></li>
+    <li>The value must match this pattern: <code>^(?!\\-)[a-z0-9\\-]+(?&lt;!\\-)$</code></li>
+    </ul>
+    <p><strong><em>MetaAttributes</em></strong></p>
+    <ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/definitions/MetaAttributes">path: #/definitions/MetaAttributes</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li><i id="#/definitions/MetaAttributes/items">path: #/definitions/MetaAttributes/items</i></li>
+    <li>&#36;ref: <a href="#/definitions/MetaKeyAttributes">#/definitions/MetaKeyAttributes</a></li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>MetaKeyAttributes</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/MetaKeyAttributes">path: #/definitions/MetaKeyAttributes</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/MetaKeyAttributes/properties/id">id</b> <code>required</code><ul>
+    <li><i id="#/definitions/MetaKeyAttributes/properties/id">path: #/definitions/MetaKeyAttributes/properties/id</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomieID">#/definitions/HomieID</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MetaKeyAttributes/properties/key">key</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/MetaKeyAttributes/properties/key">path: #/definitions/MetaKeyAttributes/properties/key</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MetaKeyAttributes/properties/value">value</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/MetaKeyAttributes/properties/value">path: #/definitions/MetaKeyAttributes/properties/value</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MetaKeyAttributes/properties/subkeys">subkeys</b><ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/definitions/MetaKeyAttributes/properties/subkeys">path: #/definitions/MetaKeyAttributes/properties/subkeys</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li><i id="#/definitions/MetaKeyAttributes/properties/subkeys/items">path: #/definitions/MetaKeyAttributes/properties/subkeys/items</i></li>
+    <li>&#36;ref: <a href="#/definitions/MetaSubkeyAttributes">#/definitions/MetaSubkeyAttributes</a></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>MetaSubkeyAttributes</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/MetaSubkeyAttributes">path: #/definitions/MetaSubkeyAttributes</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/MetaSubkeyAttributes/properties/id">id</b> <code>required</code><ul>
+    <li><i id="#/definitions/MetaSubkeyAttributes/properties/id">path: #/definitions/MetaSubkeyAttributes/properties/id</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomieID">#/definitions/HomieID</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MetaSubkeyAttributes/properties/key">key</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/MetaSubkeyAttributes/properties/key">path: #/definitions/MetaSubkeyAttributes/properties/key</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MetaSubkeyAttributes/properties/value">value</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/MetaSubkeyAttributes/properties/value">path: #/definitions/MetaSubkeyAttributes/properties/value</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>HomieDatatype</em></strong></p>
+    <ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/HomieDatatype">path: #/definitions/HomieDatatype</i></li>
+    <li>The value is restricted to the following: <ol>
+    <li><em>&quot;integer&quot;</em></li>
+    <li><em>&quot;float&quot;</em></li>
+    <li><em>&quot;boolean&quot;</em></li>
+    <li><em>&quot;string&quot;</em></li>
+    <li><em>&quot;enum&quot;</em></li>
+    <li><em>&quot;color&quot;</em></li>
+    <li><em>&quot;datetime&quot;</em></li>
+    <li><em>&quot;duration&quot;</em></li>
+    </ol>
+    </li>
+    </ul>
+    <p><strong><em>HomiePropertyOptions</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/HomiePropertyOptions">path: #/definitions/HomiePropertyOptions</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/HomiePropertyOptions/properties/readValueFromMqtt">readValueFromMqtt</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/HomiePropertyOptions/properties/readValueFromMqtt">path: #/definitions/HomiePropertyOptions/properties/readValueFromMqtt</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/HomiePropertyOptions/properties/readTimeout">readTimeout</b><ul>
+    <li>Type: <code>number</code></li>
+    <li><i id="#/definitions/HomiePropertyOptions/properties/readTimeout">path: #/definitions/HomiePropertyOptions/properties/readTimeout</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>SmarthomeSpec</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/SmarthomeSpec">path: #/definitions/SmarthomeSpec</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/SmarthomeSpec/properties/type">type</b> <code>required</code><ul>
+    <li><i id="#/definitions/SmarthomeSpec/properties/type">path: #/definitions/SmarthomeSpec/properties/type</i></li>
+    <li>&#36;ref: <a href="#/definitions/SmarthomeType">#/definitions/SmarthomeType</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/SmarthomeSpec/properties/config">config</b><ul>
+    <li><i id="#/definitions/SmarthomeSpec/properties/config">path: #/definitions/SmarthomeSpec/properties/config</i></li>
+    <li>&#36;ref: <a href="#/definitions/SmarthomeNodePropConfig">#/definitions/SmarthomeNodePropConfig</a></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>SmarthomeType</em></strong></p>
+    <ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/SmarthomeType">path: #/definitions/SmarthomeType</i></li>
+    <li>The value is restricted to the following: <ol>
+    <li><em>&quot;homie-homecontrol/v1/type=battery&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=switch&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=contact&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=weather&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=button&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=tiltsensor&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=motionsensor&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=thermostat&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=mediaplayer&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=powermeter&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=maintenance&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=dimmer&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=shutter&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=colorlight&quot;</em></li>
+    <li><em>&quot;homie-homecontrol/v1/type=text&quot;</em></li>
+    </ol>
+    </li>
+    </ul>
+    <p><strong><em>SmarthomeNodePropConfig</em></strong></p>
+    <ul>
+    <li><i id="#/definitions/SmarthomeNodePropConfig">path: #/definitions/SmarthomeNodePropConfig</i></li>
+    </ul>
+    <p><strong><em>BatteryNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/BatteryNodePropertyConfig">path: #/definitions/BatteryNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/BatteryNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/BatteryNodePropertyConfig/properties/propertyOpts">path: #/definitions/BatteryNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/BatteryNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/BatteryNodePropertyConfig/properties/settable">path: #/definitions/BatteryNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/BatteryNodePropertyConfig/properties/lowBattery">lowBattery</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/BatteryNodePropertyConfig/properties/lowBattery">path: #/definitions/BatteryNodePropertyConfig/properties/lowBattery</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/BatteryNodePropertyConfig/properties/batteryLevel">batteryLevel</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/BatteryNodePropertyConfig/properties/batteryLevel">path: #/definitions/BatteryNodePropertyConfig/properties/batteryLevel</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>SetableProps</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/SetableProps">path: #/definitions/SetableProps</i></li>
+    <li>This schema accepts additional properties.</li>
+    <li><strong><em>Properties</em></strong></li>
+    </ul>
+    <p><strong><em>SwitchNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/SwitchNodePropertyConfig">path: #/definitions/SwitchNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/SwitchNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/SwitchNodePropertyConfig/properties/propertyOpts">path: #/definitions/SwitchNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/SwitchNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/SwitchNodePropertyConfig/properties/settable">path: #/definitions/SwitchNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>ContactNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/ContactNodePropertyConfig">path: #/definitions/ContactNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/ContactNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/ContactNodePropertyConfig/properties/propertyOpts">path: #/definitions/ContactNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ContactNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/ContactNodePropertyConfig/properties/settable">path: #/definitions/ContactNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>WeatherhNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/WeatherhNodePropertyConfig">path: #/definitions/WeatherhNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/propertyOpts">path: #/definitions/WeatherhNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/settable">path: #/definitions/WeatherhNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/temperature">temperature</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/temperature">path: #/definitions/WeatherhNodePropertyConfig/properties/temperature</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/tempUnit">tempUnit</b> <code>required</code><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/tempUnit">path: #/definitions/WeatherhNodePropertyConfig/properties/tempUnit</i></li>
+    <li>The value is restricted to the following: <ol>
+    <li><em>&quot;C&quot;</em></li>
+    <li><em>&quot;F&quot;</em></li>
+    </ol>
+    </li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/humidity">humidity</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/humidity">path: #/definitions/WeatherhNodePropertyConfig/properties/humidity</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/pressure">pressure</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/pressure">path: #/definitions/WeatherhNodePropertyConfig/properties/pressure</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>ButtonNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/ButtonNodePropertyConfig">path: #/definitions/ButtonNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/ButtonNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/ButtonNodePropertyConfig/properties/propertyOpts">path: #/definitions/ButtonNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ButtonNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/ButtonNodePropertyConfig/properties/settable">path: #/definitions/ButtonNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ButtonNodePropertyConfig/properties/buttonStates">buttonStates</b> <code>required</code><ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/definitions/ButtonNodePropertyConfig/properties/buttonStates">path: #/definitions/ButtonNodePropertyConfig/properties/buttonStates</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li><i id="#/definitions/ButtonNodePropertyConfig/properties/buttonStates/items">path: #/definitions/ButtonNodePropertyConfig/properties/buttonStates/items</i></li>
+    <li>&#36;ref: <a href="#/definitions/ButtonState">#/definitions/ButtonState</a></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>ButtonState</em></strong></p>
+    <ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/ButtonState">path: #/definitions/ButtonState</i></li>
+    <li>The value is restricted to the following: <ol>
+    <li><em>&quot;press&quot;</em></li>
+    <li><em>&quot;long-press&quot;</em></li>
+    <li><em>&quot;double-press&quot;</em></li>
+    <li><em>&quot;release&quot;</em></li>
+    <li><em>&quot;long-release&quot;</em></li>
+    <li><em>&quot;continuous&quot;</em></li>
+    </ol>
+    </li>
+    </ul>
+    <p><strong><em>TiltSensorNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/TiltSensorNodePropertyConfig">path: #/definitions/TiltSensorNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/TiltSensorNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/TiltSensorNodePropertyConfig/properties/propertyOpts">path: #/definitions/TiltSensorNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/TiltSensorNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/TiltSensorNodePropertyConfig/properties/settable">path: #/definitions/TiltSensorNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>MotionSensorhNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/MotionSensorhNodePropertyConfig">path: #/definitions/MotionSensorhNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/propertyOpts">path: #/definitions/MotionSensorhNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/settable">path: #/definitions/MotionSensorhNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/lux">lux</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/lux">path: #/definitions/MotionSensorhNodePropertyConfig/properties/lux</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotion">noMotion</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotion">path: #/definitions/MotionSensorhNodePropertyConfig/properties/noMotion</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals">noMotionIntervals</b> <code>required</code><ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals">path: #/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li>Type: <code>number</code></li>
+    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals/items">path: #/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals/items</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>MediaplayerPropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig">path: #/definitions/MediaplayerPropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/propertyOpts">path: #/definitions/MediaplayerPropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/settable">path: #/definitions/MediaplayerPropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/next">next</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/next">path: #/definitions/MediaplayerPropertyConfig/properties/next</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/previous">previous</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/previous">path: #/definitions/MediaplayerPropertyConfig/properties/previous</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/forward">forward</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/forward">path: #/definitions/MediaplayerPropertyConfig/properties/forward</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/rewind">rewind</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/rewind">path: #/definitions/MediaplayerPropertyConfig/properties/rewind</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/stop">stop</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/stop">path: #/definitions/MediaplayerPropertyConfig/properties/stop</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/position">position</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/position">path: #/definitions/MediaplayerPropertyConfig/properties/position</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/mediaUrl">mediaUrl</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/mediaUrl">path: #/definitions/MediaplayerPropertyConfig/properties/mediaUrl</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/volume">volume</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/volume">path: #/definitions/MediaplayerPropertyConfig/properties/volume</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/mute">mute</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/mute">path: #/definitions/MediaplayerPropertyConfig/properties/mute</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/shuffle">shuffle</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/shuffle">path: #/definitions/MediaplayerPropertyConfig/properties/shuffle</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/repeat">repeat</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/repeat">path: #/definitions/MediaplayerPropertyConfig/properties/repeat</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MediaplayerPropertyConfig/properties/trackInfo">trackInfo</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MediaplayerPropertyConfig/properties/trackInfo">path: #/definitions/MediaplayerPropertyConfig/properties/trackInfo</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>ThermostatNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig">path: #/definitions/ThermostatNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/ThermostatNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig/properties/propertyOpts">path: #/definitions/ThermostatNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ThermostatNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig/properties/settable">path: #/definitions/ThermostatNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ThermostatNodePropertyConfig/properties/tempUnit">tempUnit</b> <code>required</code><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig/properties/tempUnit">path: #/definitions/ThermostatNodePropertyConfig/properties/tempUnit</i></li>
+    <li>The value is restricted to the following: <ol>
+    <li><em>&quot;C&quot;</em></li>
+    <li><em>&quot;F&quot;</em></li>
+    </ol>
+    </li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ThermostatNodePropertyConfig/properties/valve">valve</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig/properties/valve">path: #/definitions/ThermostatNodePropertyConfig/properties/valve</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ThermostatNodePropertyConfig/properties/windowopen">windowopen</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig/properties/windowopen">path: #/definitions/ThermostatNodePropertyConfig/properties/windowopen</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ThermostatNodePropertyConfig/properties/boost_state">boost_state</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig/properties/boost_state">path: #/definitions/ThermostatNodePropertyConfig/properties/boost_state</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ThermostatNodePropertyConfig/properties/mode">mode</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig/properties/mode">path: #/definitions/ThermostatNodePropertyConfig/properties/mode</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ThermostatNodePropertyConfig/properties/modes">modes</b> <code>required</code><ul>
+    <li>Type: <code>array</code></li>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig/properties/modes">path: #/definitions/ThermostatNodePropertyConfig/properties/modes</i><ul>
+    <li><strong><em>Items</em></strong></li>
+    <li><i id="#/definitions/ThermostatNodePropertyConfig/properties/modes/items">path: #/definitions/ThermostatNodePropertyConfig/properties/modes/items</i></li>
+    <li>&#36;ref: <a href="#/definitions/ThermostatMode">#/definitions/ThermostatMode</a></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>ThermostatMode</em></strong></p>
+    <ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/ThermostatMode">path: #/definitions/ThermostatMode</i></li>
+    <li>The value is restricted to the following: <ol>
+    <li><em>&quot;off&quot;</em></li>
+    <li><em>&quot;auto&quot;</em></li>
+    <li><em>&quot;manual&quot;</em></li>
+    <li><em>&quot;party&quot;</em></li>
+    <li><em>&quot;boost&quot;</em></li>
+    <li><em>&quot;cool&quot;</em></li>
+    <li><em>&quot;heat&quot;</em></li>
+    <li><em>&quot;emergency-heating&quot;</em></li>
+    <li><em>&quot;precooling&quot;</em></li>
+    <li><em>&quot;fan-only&quot;</em></li>
+    <li><em>&quot;dry&quot;</em></li>
+    <li><em>&quot;sleep&quot;</em></li>
+    </ol>
+    </li>
+    </ul>
+    <p><strong><em>PowermeterNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/PowermeterNodePropertyConfig">path: #/definitions/PowermeterNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/PowermeterNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/PowermeterNodePropertyConfig/properties/propertyOpts">path: #/definitions/PowermeterNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/PowermeterNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/PowermeterNodePropertyConfig/properties/settable">path: #/definitions/PowermeterNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/PowermeterNodePropertyConfig/properties/current">current</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/PowermeterNodePropertyConfig/properties/current">path: #/definitions/PowermeterNodePropertyConfig/properties/current</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/PowermeterNodePropertyConfig/properties/frequency">frequency</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/PowermeterNodePropertyConfig/properties/frequency">path: #/definitions/PowermeterNodePropertyConfig/properties/frequency</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/PowermeterNodePropertyConfig/properties/power">power</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/PowermeterNodePropertyConfig/properties/power">path: #/definitions/PowermeterNodePropertyConfig/properties/power</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/PowermeterNodePropertyConfig/properties/voltage">voltage</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/PowermeterNodePropertyConfig/properties/voltage">path: #/definitions/PowermeterNodePropertyConfig/properties/voltage</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/PowermeterNodePropertyConfig/properties/energy_counter">energy_counter</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/PowermeterNodePropertyConfig/properties/energy_counter">path: #/definitions/PowermeterNodePropertyConfig/properties/energy_counter</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>MaintenanceNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/MaintenanceNodePropertyConfig">path: #/definitions/MaintenanceNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/MaintenanceNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/MaintenanceNodePropertyConfig/properties/propertyOpts">path: #/definitions/MaintenanceNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MaintenanceNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/MaintenanceNodePropertyConfig/properties/settable">path: #/definitions/MaintenanceNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MaintenanceNodePropertyConfig/properties/lowBattery">lowBattery</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MaintenanceNodePropertyConfig/properties/lowBattery">path: #/definitions/MaintenanceNodePropertyConfig/properties/lowBattery</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MaintenanceNodePropertyConfig/properties/batteryLevel">batteryLevel</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MaintenanceNodePropertyConfig/properties/batteryLevel">path: #/definitions/MaintenanceNodePropertyConfig/properties/batteryLevel</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MaintenanceNodePropertyConfig/properties/reachable">reachable</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MaintenanceNodePropertyConfig/properties/reachable">path: #/definitions/MaintenanceNodePropertyConfig/properties/reachable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/MaintenanceNodePropertyConfig/properties/lastUpdate">lastUpdate</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/MaintenanceNodePropertyConfig/properties/lastUpdate">path: #/definitions/MaintenanceNodePropertyConfig/properties/lastUpdate</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>DimmerNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/DimmerNodePropertyConfig">path: #/definitions/DimmerNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/DimmerNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/DimmerNodePropertyConfig/properties/propertyOpts">path: #/definitions/DimmerNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/DimmerNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/DimmerNodePropertyConfig/properties/settable">path: #/definitions/DimmerNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/DimmerNodePropertyConfig/properties/step">step</b> <code>required</code><ul>
+    <li>Type: <code>number</code></li>
+    <li><i id="#/definitions/DimmerNodePropertyConfig/properties/step">path: #/definitions/DimmerNodePropertyConfig/properties/step</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/DimmerNodePropertyConfig/properties/stepToZero">stepToZero</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/DimmerNodePropertyConfig/properties/stepToZero">path: #/definitions/DimmerNodePropertyConfig/properties/stepToZero</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>ShutterNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/ShutterNodePropertyConfig">path: #/definitions/ShutterNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/ShutterNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/ShutterNodePropertyConfig/properties/propertyOpts">path: #/definitions/ShutterNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ShutterNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/ShutterNodePropertyConfig/properties/settable">path: #/definitions/ShutterNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ShutterNodePropertyConfig/properties/canStop">canStop</b> <code>required</code><ul>
+    <li>Type: <code>boolean</code></li>
+    <li><i id="#/definitions/ShutterNodePropertyConfig/properties/canStop">path: #/definitions/ShutterNodePropertyConfig/properties/canStop</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>ColorLightNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/ColorLightNodePropertyConfig">path: #/definitions/ColorLightNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/propertyOpts">path: #/definitions/ColorLightNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/settable">path: #/definitions/ColorLightNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/ctmin">ctmin</b> <code>required</code><ul>
+    <li>Type: <code>number</code></li>
+    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/ctmin">path: #/definitions/ColorLightNodePropertyConfig/properties/ctmin</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/ctmax">ctmax</b> <code>required</code><ul>
+    <li>Type: <code>number</code></li>
+    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/ctmax">path: #/definitions/ColorLightNodePropertyConfig/properties/ctmax</i></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/colorMode">colorMode</b><ul>
+    <li>Type: <code>string</code></li>
+    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/colorMode">path: #/definitions/ColorLightNodePropertyConfig/properties/colorMode</i></li>
+    <li>The value is restricted to the following: <ol>
+    <li><em>&quot;rgb&quot;</em></li>
+    <li><em>&quot;hsv&quot;</em></li>
+    </ol>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><strong><em>TextNodePropertyConfig</em></strong></p>
+    <ul>
+    <li>Type: <code>object</code></li>
+    <li><i id="#/definitions/TextNodePropertyConfig">path: #/definitions/TextNodePropertyConfig</i></li>
+    <li>This schema <u>does not</u> accept additional properties.</li>
+    <li><strong><em>Properties</em></strong><ul>
+    <li><b id="#/definitions/TextNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/TextNodePropertyConfig/properties/propertyOpts">path: #/definitions/TextNodePropertyConfig/properties/propertyOpts</i></li>
+    <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
+    </ul>
+    </li>
+    <li><b id="#/definitions/TextNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/TextNodePropertyConfig/properties/settable">path: #/definitions/TextNodePropertyConfig/properties/settable</i></li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <p><em>Generated with <a href="https://brianwendt.github.io/json-schema-md-doc/">json-schema-md-doc</a></em></p>
+    
+    
+    
+</script>

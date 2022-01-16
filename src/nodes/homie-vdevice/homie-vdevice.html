@@ -1,0 +1,119 @@
+<script type="text/javascript">
+    RED.nodes.registerType('homie-vdevice', {
+        category: 'homie',
+        color: '#00796b',
+        defaults: {
+            homieCfg: { value: "", type: "homie-config" },
+            name: { value: "" },
+            device: { value: "", type:"homie-vdevice-config", required: "true" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-circle",
+        inputLabels: 'set device state',
+        outputLabels: ["device state"],
+        paletteLabel: 'Virtual Device',
+        label: function () {
+            return this.name || "homie-vdevice";
+        },
+        oneditprepare: function () {
+            const node = this;
+
+            // function getLabel(item){
+            //     if (item.label){
+            //         return `${item.label} (${item.value})`;
+            //     }else{
+            //         return item.value;
+            //     }
+            // }
+
+            // function updateSelectionList(attrId, list, value) {
+            //     const selectionListElem = $(`#node-input-${attrId}`);
+            //     if (!selectionListElem) { return; }
+
+            //     // Clear element
+            //     selectionListElem.children().remove();
+
+            //     list.forEach(item => {
+            //         if (item.value !== value){
+            //             selectionListElem.append('<option value="' + item.value + '">' + getLabel(item) + '</option>');
+            //         } else{
+            //             selectionListElem.append('<option value="' + item.value + '" selected="true">' + getLabel(item)  + '</option>');
+            //         }
+            //     });
+
+            //     console.log(`${attrId} - preselecting value: `, value)
+            //     selectionListElem.val(value);
+
+            // }
+
+
+            // function updateDeviceList(node) {
+            //     const homieCfg = $("#node-input-homieCfg").find(":selected").val();
+            //     $.getJSON("nodeHomie/vrDeviceList", { homieCfg })
+            //         .done(function (data) {
+            //             console.log('DeviceList: ', data);
+
+            //             updateSelectionList(
+            //                 'device',
+            //                 data.map(device => {  return { value: device.id, label: device.name } }),
+            //                 $("#node-input-device").val() || node.device
+            //             );
+
+            //         });
+            // }
+
+            // $('#node-input-homieCfg').change(function (ev) { // update device list if homieCfg is changed
+            //     updateDeviceList(node);
+            // });
+
+
+
+        }
+    });
+
+
+
+
+
+</script>
+
+<script type="text/html" data-template-name="homie-vdevice">
+    <style type="text/css">
+        .form-row select {
+          width: 70%;
+        }
+
+      </style>
+
+    <div class="form-row">
+        <label for="node-input-homieCfg"><i class="fa fa-tag"></i> Homie Config</label>
+        <input type="text" id="node-input-homieCfg" placeholder="Homie Config">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-tag"></i> Select Device</label>
+        <input type="text" id="node-input-device" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+</script>
+
+<script type="text/html" data-help-name="homie-vdevice">
+    <p>Access a virtual homie device defined in node-red. Input will update the virtual device state. State updates will be send to the output.</p>
+    <h3>Input</h3>
+    <p>If a message is sent to the node the device will be set to the payload value.
+    If not payload is specified only the current state will be emitted via the output.</p>
+    <h3>Output</h3>
+    <p>Will send outgoing messages with the device state (init, ready...).</p>
+    <p>Outgoing messages include device state in the payload and device id as seperate field:</p>
+    <pre><code class="lang-json">
+    {
+        <span class="hljs-attr">"payload"</span>: <span class="hljs-string">"ready"</span>,
+        <span class="hljs-attr">"device"</span>: <span class="hljs-string">"security"</span>
+    }
+    </code></pre>
+    
+</script>
