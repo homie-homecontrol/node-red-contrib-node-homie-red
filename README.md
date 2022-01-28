@@ -273,6 +273,23 @@ __Node level extra configuration__
 `fromSmarthome` (object):
 * node-homie-red uses the `node-homie` and `hc-node-homie-smarthome` libraries under the hood. The later one defines a set of standard node types for smarthome usage in the homie-homecontrol smarthome system. This option offers easy specification of these default nodes in your devices. For more details see the section [Smarthome Spec](#reference-smarthome-spec).
 
+
+`propertyOpts` (object, default `{ "readValueFromMqtt": true, "readTimeout": 3000 }`):
+
+* node-homie offers to read the current value of a property from mqtt when creating the device. Basically using mqtt as persistent storage itself. This is useful to retain the last value of the property in case of a Node-RED restart for example. 
+    >TODO: maybe provide a value field in the spec to always initialize with a static value.
+
+* `readValueFromMqtt`: Default is to read the last value in on device initialization - if you set this to false make sure to take of setting the inital value for the property after a Node-RED restart.
+* `readTimeout`: max time in milliseconds to wait for a message to be received from mqtt for the property topic. Please note for new empty properties this leads to a delay of `readTimeout` milliseconds before the device finishes intializing (transitions to state ready).
+* data format:
+    ```json
+    {
+        "readValueFromMqtt": true,
+        "readTimeout": 3000
+    }
+    ```
+
+
 __Property level extra configuration__
 
 `passThrough` (boolean, default `false`): 

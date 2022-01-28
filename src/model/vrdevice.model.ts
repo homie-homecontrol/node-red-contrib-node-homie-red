@@ -23,6 +23,7 @@ export interface VirtualNodeSpec extends BaseItemAtrributes {
     properties?: VirtualPropertySpec[];
     fromSmarthome?: SmarthomeSpec;
     passThrough?: boolean | HomieID[];
+    propertyOpts?: HomiePropertyOptions;
 }
 
 export interface NodeSpec {
@@ -30,6 +31,7 @@ export interface NodeSpec {
     properties?: VirtualPropertySpec[];
     fromSmarthome?: SmarthomeSpec;
     passThrough?: boolean | HomieID[];
+    propertyOpts?: HomiePropertyOptions;
 }
 
 

@@ -6,12 +6,12 @@ export function toDeviceSpec(spec: VirtualDeviceSpec): DeviceSpec {
 }
 
 export function toNodeSpec(spec: VirtualNodeSpec): NodeSpec {
-    const { properties, fromSmarthome, passThrough, ...attrs } = spec;
-    return { properties, fromSmarthome, passThrough, attrs };
+    const { properties, fromSmarthome, passThrough, propertyOpts, ...attrs } = spec;
+    return { properties, fromSmarthome, passThrough, attrs, propertyOpts };
 }
 
 
 export function toPropertySpec(spec: VirtualPropertySpec): PropertySpec {
     const { passThrough, propertyOpts, ...attrs } = spec;
-    return { passThrough: passThrough === true ? true : false, propertyOpts: {readTimeout: 3000, readValueFromMqtt: true, ...propertyOpts}, attrs };
+    return { passThrough: passThrough === true ? true : false, propertyOpts, attrs };
 }

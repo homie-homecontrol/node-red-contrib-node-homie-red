@@ -1,7 +1,6 @@
 # Virtual Device Spec
 
 **_Properties_**
-
  - <b id="#/properties/id">id</b> `required`
 	 - <i id="#/properties/id">path: #/properties/id</i>
 	 - &#36;ref: [#/definitions/HomieID](#/definitions/HomieID)
@@ -23,7 +22,6 @@
 		 - **_Items_**
 		 - <i id="#/properties/nodes/items">path: #/properties/nodes/items</i>
 		 - &#36;ref: [#/definitions/VirtualNodeSpec](#/definitions/VirtualNodeSpec)
-
 
 
 ## VirtualNodeSpec
@@ -106,10 +104,7 @@
 		 - <i id="#/definitions/VirtualPropertySpec/properties/propertyOpts">path: #/definitions/VirtualPropertySpec/properties/propertyOpts</i>
 		 - &#36;ref: [#/definitions/HomiePropertyOptions](#/definitions/HomiePropertyOptions)
 
-
-
-
-## Further type definitions
+# definitions
 
 **_HomieID_**
 
@@ -240,29 +235,21 @@
 
 **_BatteryNodePropertyConfig_**
 
- - Type: `object`
  - <i id="#/definitions/BatteryNodePropertyConfig">path: #/definitions/BatteryNodePropertyConfig</i>
+
+
+**_SetableProps<SmarthomeTypeBatteryProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeBatteryProps>">path: #/definitions/SetableProps<SmarthomeTypeBatteryProps></i>
  - This schema <u>does not</u> accept additional properties.
  - **_Properties_**
-	 - <b id="#/definitions/BatteryNodePropertyConfig/properties/propertyOpts">propertyOpts</b>
-		 - <i id="#/definitions/BatteryNodePropertyConfig/properties/propertyOpts">path: #/definitions/BatteryNodePropertyConfig/properties/propertyOpts</i>
-		 - &#36;ref: [#/definitions/HomiePropertyOptions](#/definitions/HomiePropertyOptions)
-	 - <b id="#/definitions/BatteryNodePropertyConfig/properties/settable">settable</b>
-		 - <i id="#/definitions/BatteryNodePropertyConfig/properties/settable">path: #/definitions/BatteryNodePropertyConfig/properties/settable</i>
-	 - <b id="#/definitions/BatteryNodePropertyConfig/properties/lowBattery">lowBattery</b> `required`
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeBatteryProps>/properties/low-battery">low-battery</b>
 		 - Type: `boolean`
-		 - <i id="#/definitions/BatteryNodePropertyConfig/properties/lowBattery">path: #/definitions/BatteryNodePropertyConfig/properties/lowBattery</i>
-	 - <b id="#/definitions/BatteryNodePropertyConfig/properties/batteryLevel">batteryLevel</b> `required`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeBatteryProps>/properties/low-battery">path: #/definitions/SetableProps<SmarthomeTypeBatteryProps>/properties/low-battery</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeBatteryProps>/properties/battery-level">battery-level</b>
 		 - Type: `boolean`
-		 - <i id="#/definitions/BatteryNodePropertyConfig/properties/batteryLevel">path: #/definitions/BatteryNodePropertyConfig/properties/batteryLevel</i>
-
-
-**_SetableProps_**
-
- - Type: `object`
- - <i id="#/definitions/SetableProps">path: #/definitions/SetableProps</i>
- - This schema accepts additional properties.
- - **_Properties_**
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeBatteryProps>/properties/battery-level">path: #/definitions/SetableProps<SmarthomeTypeBatteryProps>/properties/battery-level</i>
 
 
 **_SwitchNodePropertyConfig_**
@@ -278,6 +265,20 @@
 		 - <i id="#/definitions/SwitchNodePropertyConfig/properties/settable">path: #/definitions/SwitchNodePropertyConfig/properties/settable</i>
 
 
+**_SetableProps<SmarthomeTypeSwitchProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeSwitchProps>">path: #/definitions/SetableProps<SmarthomeTypeSwitchProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeSwitchProps>/properties/state">state</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeSwitchProps>/properties/state">path: #/definitions/SetableProps<SmarthomeTypeSwitchProps>/properties/state</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeSwitchProps>/properties/action">action</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeSwitchProps>/properties/action">path: #/definitions/SetableProps<SmarthomeTypeSwitchProps>/properties/action</i>
+
+
 **_ContactNodePropertyConfig_**
 
  - Type: `object`
@@ -289,6 +290,17 @@
 		 - &#36;ref: [#/definitions/HomiePropertyOptions](#/definitions/HomiePropertyOptions)
 	 - <b id="#/definitions/ContactNodePropertyConfig/properties/settable">settable</b>
 		 - <i id="#/definitions/ContactNodePropertyConfig/properties/settable">path: #/definitions/ContactNodePropertyConfig/properties/settable</i>
+
+
+**_SetableProps<SmarthomeTypeContactProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeContactProps>">path: #/definitions/SetableProps<SmarthomeTypeContactProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeContactProps>/properties/state">state</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeContactProps>/properties/state">path: #/definitions/SetableProps<SmarthomeTypeContactProps>/properties/state</i>
 
 
 **_WeatherhNodePropertyConfig_**
@@ -319,6 +331,23 @@
 		 - <i id="#/definitions/WeatherhNodePropertyConfig/properties/pressure">path: #/definitions/WeatherhNodePropertyConfig/properties/pressure</i>
 
 
+**_SetableProps<SmarthomeTypeWeatherProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeWeatherProps>">path: #/definitions/SetableProps<SmarthomeTypeWeatherProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeWeatherProps>/properties/temperature">temperature</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeWeatherProps>/properties/temperature">path: #/definitions/SetableProps<SmarthomeTypeWeatherProps>/properties/temperature</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeWeatherProps>/properties/humidity">humidity</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeWeatherProps>/properties/humidity">path: #/definitions/SetableProps<SmarthomeTypeWeatherProps>/properties/humidity</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeWeatherProps>/properties/pressure">pressure</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeWeatherProps>/properties/pressure">path: #/definitions/SetableProps<SmarthomeTypeWeatherProps>/properties/pressure</i>
+
+
 **_ButtonNodePropertyConfig_**
 
  - Type: `object`
@@ -336,6 +365,17 @@
 			 - **_Items_**
 			 - <i id="#/definitions/ButtonNodePropertyConfig/properties/buttonStates/items">path: #/definitions/ButtonNodePropertyConfig/properties/buttonStates/items</i>
 			 - &#36;ref: [#/definitions/ButtonState](#/definitions/ButtonState)
+
+
+**_SetableProps<SmarthomeTypeButtonProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeButtonProps>">path: #/definitions/SetableProps<SmarthomeTypeButtonProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeButtonProps>/properties/action">action</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeButtonProps>/properties/action">path: #/definitions/SetableProps<SmarthomeTypeButtonProps>/properties/action</i>
 
 
 **_ButtonState_**
@@ -364,6 +404,17 @@
 		 - <i id="#/definitions/TiltSensorNodePropertyConfig/properties/settable">path: #/definitions/TiltSensorNodePropertyConfig/properties/settable</i>
 
 
+**_SetableProps<SmarthomeTypeTiltProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeTiltProps>">path: #/definitions/SetableProps<SmarthomeTypeTiltProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeTiltProps>/properties/state">state</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeTiltProps>/properties/state">path: #/definitions/SetableProps<SmarthomeTypeTiltProps>/properties/state</i>
+
+
 **_MotionSensorhNodePropertyConfig_**
 
  - Type: `object`
@@ -387,6 +438,23 @@
 			 - **_Items_**
 			 - Type: `number`
 			 - <i id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals/items">path: #/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals/items</i>
+
+
+**_SetableProps<SmarthomeTypeMotionProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeMotionProps>">path: #/definitions/SetableProps<SmarthomeTypeMotionProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMotionProps>/properties/motion">motion</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMotionProps>/properties/motion">path: #/definitions/SetableProps<SmarthomeTypeMotionProps>/properties/motion</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMotionProps>/properties/no-motion">no-motion</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMotionProps>/properties/no-motion">path: #/definitions/SetableProps<SmarthomeTypeMotionProps>/properties/no-motion</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMotionProps>/properties/lux">lux</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMotionProps>/properties/lux">path: #/definitions/SetableProps<SmarthomeTypeMotionProps>/properties/lux</i>
 
 
 **_MediaplayerPropertyConfig_**
@@ -438,6 +506,50 @@
 		 - <i id="#/definitions/MediaplayerPropertyConfig/properties/trackInfo">path: #/definitions/MediaplayerPropertyConfig/properties/trackInfo</i>
 
 
+**_SetableProps<SmarthomeTypeMediaplayerProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/player-action">player-action</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/player-action">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/player-action</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/position">position</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/position">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/position</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/volume">volume</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/volume">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/volume</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/media-url">media-url</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/media-url">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/media-url</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/play-state">play-state</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/play-state">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/play-state</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/mute">mute</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/mute">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/mute</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/shuffle">shuffle</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/shuffle">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/shuffle</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/repeat">repeat</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/repeat">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/repeat</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/title">title</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/title">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/title</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/artist">artist</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/artist">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/artist</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/album">album</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/album">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/album</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/duration">duration</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/duration">path: #/definitions/SetableProps<SmarthomeTypeMediaplayerProps>/properties/duration</i>
+
+
 **_ThermostatNodePropertyConfig_**
 
  - Type: `object`
@@ -473,6 +585,29 @@
 			 - **_Items_**
 			 - <i id="#/definitions/ThermostatNodePropertyConfig/properties/modes/items">path: #/definitions/ThermostatNodePropertyConfig/properties/modes/items</i>
 			 - &#36;ref: [#/definitions/ThermostatMode](#/definitions/ThermostatMode)
+
+
+**_SetableProps<SmarthomeTypeThermostatProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>">path: #/definitions/SetableProps<SmarthomeTypeThermostatProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/set-temperature">set-temperature</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/set-temperature">path: #/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/set-temperature</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/valve">valve</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/valve">path: #/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/valve</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/mode">mode</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/mode">path: #/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/mode</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/windowopen">windowopen</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/windowopen">path: #/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/windowopen</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/boost-state">boost-state</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/boost-state">path: #/definitions/SetableProps<SmarthomeTypeThermostatProps>/properties/boost-state</i>
 
 
 **_ThermostatMode_**
@@ -522,6 +657,29 @@
 		 - <i id="#/definitions/PowermeterNodePropertyConfig/properties/energy_counter">path: #/definitions/PowermeterNodePropertyConfig/properties/energy_counter</i>
 
 
+**_SetableProps<SmarthomeTypePowermeterProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>">path: #/definitions/SetableProps<SmarthomeTypePowermeterProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/current">current</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/current">path: #/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/current</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/energy-counter">energy-counter</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/energy-counter">path: #/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/energy-counter</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/frequency">frequency</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/frequency">path: #/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/frequency</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/power">power</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/power">path: #/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/power</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/voltage">voltage</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/voltage">path: #/definitions/SetableProps<SmarthomeTypePowermeterProps>/properties/voltage</i>
+
+
 **_MaintenanceNodePropertyConfig_**
 
  - Type: `object`
@@ -547,6 +705,26 @@
 		 - <i id="#/definitions/MaintenanceNodePropertyConfig/properties/lastUpdate">path: #/definitions/MaintenanceNodePropertyConfig/properties/lastUpdate</i>
 
 
+**_SetableProps<SmarthomeTypeMaintenanceProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeMaintenanceProps>">path: #/definitions/SetableProps<SmarthomeTypeMaintenanceProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/low-battery">low-battery</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/low-battery">path: #/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/low-battery</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/battery-level">battery-level</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/battery-level">path: #/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/battery-level</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/last-update">last-update</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/last-update">path: #/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/last-update</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/reachable">reachable</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/reachable">path: #/definitions/SetableProps<SmarthomeTypeMaintenanceProps>/properties/reachable</i>
+
+
 **_DimmerNodePropertyConfig_**
 
  - Type: `object`
@@ -566,6 +744,20 @@
 		 - <i id="#/definitions/DimmerNodePropertyConfig/properties/stepToZero">path: #/definitions/DimmerNodePropertyConfig/properties/stepToZero</i>
 
 
+**_SetableProps<SmarthomeTypeDimmerProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeDimmerProps>">path: #/definitions/SetableProps<SmarthomeTypeDimmerProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeDimmerProps>/properties/brightness">brightness</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeDimmerProps>/properties/brightness">path: #/definitions/SetableProps<SmarthomeTypeDimmerProps>/properties/brightness</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeDimmerProps>/properties/action">action</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeDimmerProps>/properties/action">path: #/definitions/SetableProps<SmarthomeTypeDimmerProps>/properties/action</i>
+
+
 **_ShutterNodePropertyConfig_**
 
  - Type: `object`
@@ -580,6 +772,23 @@
 	 - <b id="#/definitions/ShutterNodePropertyConfig/properties/canStop">canStop</b> `required`
 		 - Type: `boolean`
 		 - <i id="#/definitions/ShutterNodePropertyConfig/properties/canStop">path: #/definitions/ShutterNodePropertyConfig/properties/canStop</i>
+	 - <b id="#/definitions/ShutterNodePropertyConfig/properties/implementUpDown">implementUpDown</b> `required`
+		 - Type: `boolean`
+		 - <i id="#/definitions/ShutterNodePropertyConfig/properties/implementUpDown">path: #/definitions/ShutterNodePropertyConfig/properties/implementUpDown</i>
+
+
+**_SetableProps<SmarthomeTypeShutterProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeShutterProps>">path: #/definitions/SetableProps<SmarthomeTypeShutterProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeShutterProps>/properties/position">position</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeShutterProps>/properties/position">path: #/definitions/SetableProps<SmarthomeTypeShutterProps>/properties/position</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeShutterProps>/properties/action">action</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeShutterProps>/properties/action">path: #/definitions/SetableProps<SmarthomeTypeShutterProps>/properties/action</i>
 
 
 **_ColorLightNodePropertyConfig_**
@@ -607,6 +816,20 @@
 			 2. _"hsv"_
 
 
+**_SetableProps<SmarthomeTypeColorLightProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeColorLightProps>">path: #/definitions/SetableProps<SmarthomeTypeColorLightProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeColorLightProps>/properties/color">color</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeColorLightProps>/properties/color">path: #/definitions/SetableProps<SmarthomeTypeColorLightProps>/properties/color</i>
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeColorLightProps>/properties/color-temperature">color-temperature</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeColorLightProps>/properties/color-temperature">path: #/definitions/SetableProps<SmarthomeTypeColorLightProps>/properties/color-temperature</i>
+
+
 **_TextNodePropertyConfig_**
 
  - Type: `object`
@@ -618,6 +841,17 @@
 		 - &#36;ref: [#/definitions/HomiePropertyOptions](#/definitions/HomiePropertyOptions)
 	 - <b id="#/definitions/TextNodePropertyConfig/properties/settable">settable</b>
 		 - <i id="#/definitions/TextNodePropertyConfig/properties/settable">path: #/definitions/TextNodePropertyConfig/properties/settable</i>
+
+
+**_SetableProps<SmarthomeTypeTextProps>_**
+
+ - Type: `object`
+ - <i id="#/definitions/SetableProps<SmarthomeTypeTextProps>">path: #/definitions/SetableProps<SmarthomeTypeTextProps></i>
+ - This schema <u>does not</u> accept additional properties.
+ - **_Properties_**
+	 - <b id="#/definitions/SetableProps<SmarthomeTypeTextProps>/properties/text">text</b>
+		 - Type: `boolean`
+		 - <i id="#/definitions/SetableProps<SmarthomeTypeTextProps>/properties/text">path: #/definitions/SetableProps<SmarthomeTypeTextProps>/properties/text</i>
 
 
 

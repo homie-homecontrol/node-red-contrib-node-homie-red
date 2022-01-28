@@ -18,6 +18,7 @@ import { toDeviceSpec, toNodeSpec, toPropertySpec } from "./virtualdevice.func";
 import { SmarthomeSpec, VirtualDeviceSpec, VirtualNodeSpec } from "../../model/vrdevice.model";
 import { HomieNodeAtrributes, MQTTConnectOpts } from "node-homie/model";
 
+const DEFAULT_PROPCONFIG = { readTimeout: 1000, readValueFromMqtt: true }
 
 export class VirtualDevice extends HomieDevice {
 
@@ -35,7 +36,7 @@ export class VirtualDevice extends HomieDevice {
     }
 
     private async makeNode(nodeSpec: VirtualNodeSpec) {
-        const { properties, fromSmarthome, passThrough, attrs } = toNodeSpec(nodeSpec);
+        const { properties, fromSmarthome, passThrough,  propertyOpts: nodePropertyOpts, attrs } = toNodeSpec(nodeSpec);
 
         const node = fromSmarthome ? this.getSmarthomeNodeFromSpec(attrs, fromSmarthome) : new HomieNode(this, attrs);
         if (!node) { return; }
@@ -44,7 +45,7 @@ export class VirtualDevice extends HomieDevice {
             properties.forEach(vPropertySpec => {
                 const { passThrough, propertyOpts, attrs: propAttrs } = toPropertySpec(vPropertySpec);
                 const existingProp = node.get(propAttrs.id);
-                const property = node.add(existingProp ? existingProp : new HomieProperty(node, { ...propAttrs }, propertyOpts));
+                const property = node.add(existingProp ? existingProp : new HomieProperty(node, { ...propAttrs }, propertyOpts ? { ...DEFAULT_PROPCONFIG, ...propertyOpts } : { ...DEFAULT_PROPCONFIG, ...nodePropertyOpts }));
 
                 if (existingProp) { property.setAttributes(propAttrs); }
 
