@@ -1221,12 +1221,12 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hc-node-homie-smarthome@~0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/hc-node-homie-smarthome/-/hc-node-homie-smarthome-0.5.0.tgz#7ebe2462f0ba1d18bb19d03d28f4362eb216f29b"
-  integrity sha512-J3iyA0bdVEn/e0X20H4lwLbRH68seQwrW4ng9bgkKXPqIKMYI4b4RgVpvZWckVW529e9Jmnjm808Bt8AGK+MHQ==
+hc-node-homie-smarthome@~0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/hc-node-homie-smarthome/-/hc-node-homie-smarthome-0.6.3.tgz#3a7ef6b7ccd63717882a27f9d29c648d3f0f4421"
+  integrity sha512-na3DKes4vqbrSfymVvrNMkZPtiTd/bFnCA5dgadiRk5MaSNYt7U3mKpahkgN419cahmLhssP6vU7BDfES2l6Rg==
   dependencies:
-    node-homie "~0.9.24"
+    node-homie "~0.9.25"
     rxjs "~7.4"
 
 help-me@^3.0.0:
@@ -1768,10 +1768,10 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-node-homie@~0.9.24:
-  version "0.9.24"
-  resolved "https://registry.yarnpkg.com/node-homie/-/node-homie-0.9.24.tgz#29c614f42df8853e32716544d670b8d236f15464"
-  integrity sha512-SlteHox7l8JCGBjeQ6xbsE4aWgf9CTgEWQ/PkXltmDVVpgwd8WxiZUtdbfliobvSX3nAT/trGYAsprQtUi5/mg==
+node-homie@~0.9.25:
+  version "0.9.25"
+  resolved "https://registry.yarnpkg.com/node-homie/-/node-homie-0.9.25.tgz#4abe7369d3c8b47a2c1a9fc233ade225cfa4f1c2"
+  integrity sha512-3z7jNORFWxp1nXQWUNy+K6tlmlBxWzHE77CxS60qFZepWzvMsxXcaL9NI4aBN/K258VoiFYXanzTXyFBuN3TmQ==
   dependencies:
     mqtt "~4.2.8"
     rxjs "~7.4"
