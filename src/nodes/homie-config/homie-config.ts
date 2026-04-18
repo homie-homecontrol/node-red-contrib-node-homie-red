@@ -63,7 +63,7 @@ module.exports = function (RED: NodeAPI) {
             }
         }
 
-        node.discovery = new DeviceDiscovery(node.getMqttOpts(), false, 3000, 500);
+        node.discovery = new DeviceDiscovery(node.getMqttOpts(), undefined, 3000, 500);
 
 
         node.on('input', function (msg: NodeMessage) {

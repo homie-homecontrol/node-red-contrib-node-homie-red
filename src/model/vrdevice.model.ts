@@ -1,5 +1,5 @@
 import { SmarthomeNodePropConfig, SmarthomeType } from "hc-node-homie-smarthome/model";
-import { BaseItemAtrributes, HomieDeviceAtrributes, HomieID, HomieNodeAtrributes, HomiePropertyAtrributes, HomiePropertyOptions } from "node-homie/model";
+import { BaseAttributes, HomieID, NodeAttributes, PropertyAttributes, HomiePropertyOptions } from "node-homie/model";
 
 
 
@@ -7,18 +7,18 @@ export type VirtualDeviceSpecs = VirtualDeviceSpec[];
 
 
 // =========== DEVICE ================
-export interface VirtualDeviceSpec extends BaseItemAtrributes {
+export interface VirtualDeviceSpec extends BaseAttributes {
     nodes: VirtualNodeSpec[];
 }
 
 export interface DeviceSpec {
-    attrs: HomieDeviceAtrributes;
+    attrs: BaseAttributes;
     nodes: VirtualNodeSpec[];
 }
 
 
 // =========== NODE ================
-export interface VirtualNodeSpec extends BaseItemAtrributes {
+export interface VirtualNodeSpec extends BaseAttributes {
     type?: string;
     properties?: VirtualPropertySpec[];
     fromSmarthome?: SmarthomeSpec;
@@ -27,7 +27,7 @@ export interface VirtualNodeSpec extends BaseItemAtrributes {
 }
 
 export interface NodeSpec {
-    attrs: HomieNodeAtrributes;
+    attrs: NodeAttributes;
     properties?: VirtualPropertySpec[];
     fromSmarthome?: SmarthomeSpec;
     passThrough?: boolean | HomieID[];
@@ -45,13 +45,13 @@ export interface SmarthomeSpec {
 
 
 // =========== PROPERTY ================
-export interface VirtualPropertySpec extends HomiePropertyAtrributes {
+export interface VirtualPropertySpec extends PropertyAttributes {
     passThrough?: boolean;
     propertyOpts?: HomiePropertyOptions;
 }
 
 export interface PropertySpec {
-    attrs: HomiePropertyAtrributes;
+    attrs: PropertyAttributes;
     passThrough?: boolean;
     propertyOpts?: HomiePropertyOptions;
 }

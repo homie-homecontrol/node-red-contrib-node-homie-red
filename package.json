@@ -61,8 +61,13 @@
     },
     "dependencies": {
         "jsonschema": "^1.4.0",
-        "node-homie": "~0.9.25",
-        "hc-node-homie-smarthome": "~0.6.3",
-        "rxjs": "~7.4.0"
+        "node-homie": "~5.0.0",
+        "hc-node-homie-smarthome": "~5.0.0",
+        "rxjs": "^7.8.2"
+    },
+    "overrides": {
+        "gulp-typescript": {
+            "source-map": "^0.7.4"
+        }
     }
 }

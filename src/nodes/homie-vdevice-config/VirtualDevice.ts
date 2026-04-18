@@ -1,22 +1,20 @@
 import { HomieDevice, HomieNode, HomieProperty } from "node-homie";
-import { DictionaryState } from "node-homie/misc";
 import {
-    BatteryNodePropertyConfig, ButtonNodePropertyConfig, ColorLightNodePropertyConfig, ContactNodePropertyConfig, DimmerNodePropertyConfig,
-    H_SMARTHOME_TYPE_BATTERY, H_SMARTHOME_TYPE_BUTTON, H_SMARTHOME_TYPE_COLORLIGHT, H_SMARTHOME_TYPE_CONTACT, H_SMARTHOME_TYPE_DIMMER,
-    H_SMARTHOME_TYPE_MAINTENANCE, H_SMARTHOME_TYPE_MEDIAPLAYER, H_SMARTHOME_TYPE_MOTION_SENSOR, H_SMARTHOME_TYPE_POWERMETER, H_SMARTHOME_TYPE_SHUTTER, H_SMARTHOME_TYPE_SWITCH, H_SMARTHOME_TYPE_TEXT, H_SMARTHOME_TYPE_THERMOSTAT,
-    H_SMARTHOME_TYPE_TILT_SENSOR, H_SMARTHOME_TYPE_WEATHER, MaintenanceNodePropertyConfig, MediaplayerPropertyConfig, MotionSensorhNodePropertyConfig, PowermeterNodePropertyConfig,
-    ShutterNodePropertyConfig, SwitchNodePropertyConfig, TextNodePropertyConfig, ThermostatNodePropertyConfig, TiltSensorNodePropertyConfig, WeatherhNodePropertyConfig
+    BatteryNodePropertyConfig, ButtonNodePropertyConfig, ColorNodePropertyConfig, ContactNodePropertyConfig, LevelNodePropertyConfig,
+    H_SMARTHOME_TYPE_BATTERY, H_SMARTHOME_TYPE_BUTTON, H_SMARTHOME_TYPE_COLOR, H_SMARTHOME_TYPE_CONTACT, H_SMARTHOME_TYPE_LEVEL,
+    H_SMARTHOME_TYPE_MAINTENANCE, H_SMARTHOME_TYPE_MEDIAPLAYER, H_SMARTHOME_TYPE_MOTION, H_SMARTHOME_TYPE_POWERMETER, H_SMARTHOME_TYPE_SHUTTER, H_SMARTHOME_TYPE_SWITCH, H_SMARTHOME_TYPE_TEXT, H_SMARTHOME_TYPE_THERMOSTAT,
+    H_SMARTHOME_TYPE_TILT, H_SMARTHOME_TYPE_CLIMATE, MaintenanceNodePropertyConfig, MediaplayerPropertyConfig, MotionNodePropertyConfig, PowermeterNodePropertyConfig,
+    ShutterNodePropertyConfig, SwitchNodePropertyConfig, TextNodePropertyConfig, ThermostatNodePropertyConfig, TiltNodePropertyConfig, ClimateNodePropertyConfig
 } from 'hc-node-homie-smarthome/model';
 import {
-    BatteryNode, ButtonNode, ColorLightNode, ContactNode, DimmerNode, MaintenanceNode,
+    BatteryNode, ButtonNode, ColorNode, ContactNode, LevelNode, MaintenanceNode,
     MediaplayerNode,
-    MotionSensorNode, PowermeterNode, ShutterNode, SwitchNode, TextNode, ThermostatNode, TiltSensorNode, WeatherNode
+    MotionNode, PowermeterNode, ShutterNode, SwitchNode, TextNode, ThermostatNode, TiltNode, ClimateNode
 } from 'hc-node-homie-smarthome';
-import { from, Observable } from "rxjs";
-import { every, takeUntil, tap } from "rxjs/operators";
+import { takeUntil } from "rxjs/operators";
 import { toDeviceSpec, toNodeSpec, toPropertySpec } from "./virtualdevice.func";
 import { SmarthomeSpec, VirtualDeviceSpec, VirtualNodeSpec } from "../../model/vrdevice.model";
-import { HomieNodeAtrributes, MQTTConnectOpts } from "node-homie/model";
+import { NodeAttributes, MQTTConnectOpts } from "node-homie/model";
 
 const DEFAULT_PROPCONFIG = { readTimeout: 1000, readValueFromMqtt: true }
 
@@ -28,14 +26,14 @@ export class VirtualDevice extends HomieDevice {
 
 
     override async onInit(): Promise<void> {
-        await Promise.all(this.spec.nodes.map(nodeSpec => {
-            return this.makeNode(nodeSpec);
-        }));
+        this.spec.nodes.forEach(nodeSpec => {
+            this.makeNode(nodeSpec);
+        });
 
         await super.onInit();
     }
 
-    private async makeNode(nodeSpec: VirtualNodeSpec) {
+    private makeNode(nodeSpec: VirtualNodeSpec) {
         const { properties, fromSmarthome, passThrough,  propertyOpts: nodePropertyOpts, attrs } = toNodeSpec(nodeSpec);
 
         const node = fromSmarthome ? this.getSmarthomeNodeFromSpec(attrs, fromSmarthome) : new HomieNode(this, attrs);
@@ -47,7 +45,7 @@ export class VirtualDevice extends HomieDevice {
                 const existingProp = node.get(propAttrs.id);
                 const property = node.add(existingProp ? existingProp : new HomieProperty(node, { ...propAttrs }, propertyOpts ? { ...DEFAULT_PROPCONFIG, ...propertyOpts } : { ...DEFAULT_PROPCONFIG, ...nodePropertyOpts }));
 
-                if (existingProp) { property.setAttributes(propAttrs); }
+                if (existingProp) { property.patchAttributes(propAttrs); }
 
                 if (passThrough) {
                     this.setPassthroughSetCommand(property);
@@ -68,7 +66,7 @@ export class VirtualDevice extends HomieDevice {
             }
         }
 
-        await this.addInitNode(node);
+        this.add(node);
      
     }
 
@@ -85,7 +83,7 @@ export class VirtualDevice extends HomieDevice {
     }
 
 
-    private getSmarthomeNodeFromSpec(attrs: HomieNodeAtrributes, smarthomeSpec: SmarthomeSpec): HomieNode | undefined {
+    private getSmarthomeNodeFromSpec(attrs: NodeAttributes, smarthomeSpec: SmarthomeSpec): HomieNode | undefined {
         const cfg = { ...smarthomeSpec.config, propertyOpts: { readTimeout: 3000, readValueFromMqtt: true, ...smarthomeSpec.config?.propertyOpts } };
 
         switch (smarthomeSpec.type) {
@@ -94,24 +92,24 @@ export class VirtualDevice extends HomieDevice {
                 return new BatteryNode(this, attrs, cfg as BatteryNodePropertyConfig);
             case H_SMARTHOME_TYPE_CONTACT:
                 return new ContactNode(this, attrs, cfg as ContactNodePropertyConfig);
-            case H_SMARTHOME_TYPE_DIMMER:
-                return new DimmerNode(this, attrs, cfg as DimmerNodePropertyConfig);
+            case H_SMARTHOME_TYPE_LEVEL:
+                return new LevelNode(this, attrs, cfg as LevelNodePropertyConfig);
             case H_SMARTHOME_TYPE_BUTTON:
                 return new ButtonNode(this, attrs, cfg as ButtonNodePropertyConfig);
-            case H_SMARTHOME_TYPE_COLORLIGHT:
-                return new ColorLightNode(this, attrs, cfg as ColorLightNodePropertyConfig);
+            case H_SMARTHOME_TYPE_COLOR:
+                return new ColorNode(this, attrs, cfg as ColorNodePropertyConfig);
             case H_SMARTHOME_TYPE_MAINTENANCE:
                 return new MaintenanceNode(this, attrs, cfg as MaintenanceNodePropertyConfig);
-            case H_SMARTHOME_TYPE_MOTION_SENSOR:
-                return new MotionSensorNode(this, attrs, cfg as MotionSensorhNodePropertyConfig);
+            case H_SMARTHOME_TYPE_MOTION:
+                return new MotionNode(this, attrs, cfg as MotionNodePropertyConfig);
             case H_SMARTHOME_TYPE_POWERMETER:
                 return new PowermeterNode(this, attrs, cfg as PowermeterNodePropertyConfig);
             case H_SMARTHOME_TYPE_THERMOSTAT:
                 return new ThermostatNode(this, attrs, cfg as ThermostatNodePropertyConfig);
-            case H_SMARTHOME_TYPE_TILT_SENSOR:
-                return new TiltSensorNode(this, attrs, cfg as TiltSensorNodePropertyConfig);
-            case H_SMARTHOME_TYPE_WEATHER:
-                return new WeatherNode(this, attrs, cfg as WeatherhNodePropertyConfig);
+            case H_SMARTHOME_TYPE_TILT:
+                return new TiltNode(this, attrs, cfg as TiltNodePropertyConfig);
+            case H_SMARTHOME_TYPE_CLIMATE:
+                return new ClimateNode(this, attrs, cfg as ClimateNodePropertyConfig);
             case H_SMARTHOME_TYPE_SWITCH:
                 return new SwitchNode(this, attrs, cfg as SwitchNodePropertyConfig);
             case H_SMARTHOME_TYPE_SHUTTER:
