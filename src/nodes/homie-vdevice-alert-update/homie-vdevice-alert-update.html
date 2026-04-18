@@ -1,0 +1,41 @@
+<script type="text/javascript">
+    RED.nodes.registerType('homie-vdevice-alert-update', {
+        category: 'homie',
+        color: '#00796b',
+        defaults: {
+            deviceCfg: { value: "", type: "homie-vdevice-config", required: "true" },
+            name: { value: "" },
+            alertId: { value: "", required: "true" }
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "font-awesome/fa-bell",
+        inputLabels: 'set or clear alert',
+        paletteLabel: 'vdevice alert',
+        align: 'right',
+        label: function () {
+            return this.name || this.alertId || "homie-vdevice-alert-update";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="homie-vdevice-alert-update">
+    <div class="form-row">
+        <label for="node-input-deviceCfg"><i class="fa fa-tag"></i> Select Device</label>
+        <input type="text" id="node-input-deviceCfg" placeholder="Device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-alertId"><i class="fa fa-tag"></i> Alert ID</label>
+        <input type="text" id="node-input-alertId" placeholder="$lowbattery">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="homie-vdevice-alert-update">
+    <p>Sets or clears an alert for a virtual device by publishing to <code>$alert/&lt;alertId&gt;</code>.</p>
+    <h3>Input</h3>
+    <p>Uses configured <code>alertId</code> (or <code>msg.alertId</code> override). If <code>msg.payload</code> is a value, the alert is set. If <code>msg.payload</code> is null/undefined or <code>msg.clear === true</code>, the alert is cleared.</p>
+</script>

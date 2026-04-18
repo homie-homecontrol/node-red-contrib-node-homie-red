@@ -23,7 +23,9 @@ Configuration Nodes:
 
 Palette Nodes:
 * Device (homie-device)
+* Device Alert (homie-device-alert)
 * Property (homie-property)
+* Property Target (homie-property-target)
 
 ### homie-config
 Here you specify the connection to your mqtt broker.
@@ -130,6 +132,54 @@ Besides that the message will include additional metadata about the property:
     }
 }
 ```
+
+### Device Alert (homie-device-alert)
+
+Represents alert messages of a discovered homie device under <code>$alert/&lt;alertId&gt;</code>.
+
+__Input__
+
+If a message is sent to the node, all active alerts are emitted as an array in `payload`.
+
+__Output__
+
+Will emit alert events from the selected device.
+
+```json
+{
+    "device": "security",
+    "alertId": "$lowbattery",
+    "topic": "security/$alert/$lowbattery",
+    "payload": "battery below 10%",
+    "cleared": false,
+    "action": "set"
+}
+```
+
+If an alert is cleared, `payload` becomes `null` and `action` is `clear`.
+
+### Property Target (homie-property-target)
+
+Represents the `$target` value of a discovered homie property.
+
+__Input__
+
+If a message is sent to the node the current target value is emitted. If no property is configured, `msg.topic` can be used with `<deviceId>/<nodeId>/<propertyId>`.
+
+__Output__
+
+Will output target value changes and target snapshots.
+
+```json
+{
+    "topic": "heater-1/thermostat/temperature",
+    "payload": "22.5",
+    "target": "22.5",
+    "homieDevice": "heater-1",
+    "homieNode": "thermostat",
+    "homieProperty": "temperature"
+}
+```
 <a name="reference-virtualdevice"></a>
 ## Virtual Device
 
@@ -140,6 +190,8 @@ Palette Nodes:
 * Virtual Device (homie-vdevice)
 * vprop value (homie-vproperty-value-update)
 * vprop /set (homie-vproperty-set-command)
+* vdevice alert (homie-vdevice-alert-update)
+* vprop target (homie-vproperty-target-update)
 
 
 ### homie-vdevice-config
@@ -429,6 +481,26 @@ Outgoing messages include the /set value as payload and a topic and property fie
     "property": "lamp-1/switch/state"
 }
 ```
+
+### vdevice alert (homie-vdevice-alert-update)
+
+Sets or clears virtual device alerts by publishing to `$alert/<alertId>`.
+
+__Input__
+
+Uses configured `alertId` (or `msg.alertId` if set).
+
+* If `msg.payload` contains a value, the alert is set.
+* If `msg.payload` is `null`/`undefined`, or `msg.clear === true`, the alert is cleared.
+
+### vprop target (homie-vproperty-target-update)
+
+Updates the `$target` value of a virtual property.
+
+__Input__
+
+* If `msg.payload` contains a value, the target is updated.
+* If `msg.payload` is `null`/`undefined`, the target is cleared.
 
 # Breaking changes (v4 → v5)
 
