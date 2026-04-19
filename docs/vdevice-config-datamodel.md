@@ -15,10 +15,17 @@ Required fields:
 
 Optional fields:
 - `name` (`string`)
+- `type` (`string | null`)
+- `children` (`HomieID[]`)
+- `root` (`HomieID`)
+- `parent` (`HomieID`)
+- `extensions` (`string[]`)
 
 Notes:
 - Additional properties are not allowed.
 - `HomieID` pattern: `^(?!\-)[a-z0-9\-]+(?<!\-)$`
+- `root`/`parent`/`children` follow Homie v5 device hierarchy semantics.
+- `state` and `homie` are managed by runtime and are not part of this spec.
 
 ## `VirtualNodeSpec`
 

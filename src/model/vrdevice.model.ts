@@ -8,6 +8,11 @@ export type VirtualDeviceSpecs = VirtualDeviceSpec[];
 
 // =========== DEVICE ================
 export interface VirtualDeviceSpec extends BaseAttributes {
+    type?: string | null;
+    children?: HomieID[];
+    root?: HomieID;
+    parent?: HomieID;
+    extensions?: string[];
     nodes: VirtualNodeSpec[];
 }
 

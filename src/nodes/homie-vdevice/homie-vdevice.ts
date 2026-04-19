@@ -1,7 +1,7 @@
 import { DeviceState, notNullish } from "node-homie/model";
 import { isNotNullish } from "node-homie/rx";
 import { NodeAPI, Node, NodeMessage, NodeDef } from "node-red";
-import { distinctUntilChanged, map, Subject, switchMap, takeUntil } from "rxjs";
+import { distinctUntilChanged, Subject, takeUntil } from "rxjs";
 import { IHomieConfig } from "../homie-config/homie-config";
 import { IHomieVDeviceConfigNode } from "../homie-vdevice-config/homie-vdevice-config";
 
@@ -31,7 +31,7 @@ module.exports = function (RED: NodeAPI) {
 
         const device = dn.device;
 
-        device.attributes$.pipe(takeUntil(onClose$), map(attrs => attrs.state), distinctUntilChanged()).subscribe(
+        device.state$.pipe(takeUntil(onClose$), distinctUntilChanged()).subscribe(
             {
                 next: state => {
                     const msg = {
@@ -51,7 +51,7 @@ module.exports = function (RED: NodeAPI) {
             }else{
                 const msg = {
                     device: config.device,
-                    payload: device.attributes.state
+                    payload: device.state
                 };
                 node.send(msg);
             }

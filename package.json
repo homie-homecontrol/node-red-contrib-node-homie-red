@@ -6,6 +6,7 @@
         "version": ">=1.3.0",
         "nodes": {
             "homie-device": "lib/nodes/homie-device/homie-device.js",
+            "homie-device-log": "lib/nodes/homie-device-log/homie-device-log.js",
             "homie-device-alert": "lib/nodes/homie-device-alert/homie-device-alert.js",
             "homie-property": "lib/nodes/homie-property/homie-property.js",
             "homie-property-target": "lib/nodes/homie-property-target/homie-property-target.js",
@@ -14,6 +15,7 @@
             "homie-vdevice": "lib/nodes/homie-vdevice/homie-vdevice.js",
             "homie-vproperty-value-update": "lib/nodes/homie-vproperty-value-update/homie-vproperty-value-update.js",
             "homie-vproperty-set-command": "lib/nodes/homie-vproperty-set-command/homie-vproperty-set-command.js",
+            "homie-vdevice-log-update": "lib/nodes/homie-vdevice-log-update/homie-vdevice-log-update.js",
             "homie-vdevice-alert-update": "lib/nodes/homie-vdevice-alert-update/homie-vdevice-alert-update.js",
             "homie-vproperty-target-update": "lib/nodes/homie-vproperty-target-update/homie-vproperty-target-update.js"
         }

@@ -150,7 +150,7 @@ module.exports = function (RED: NodeAPI) {
 
             const list = Object.values(device?.nodes)?.sort((a, b) => {
                 const nameA = a?.attributes?.name?.toUpperCase(); // Groß-/Kleinschreibung ignorieren
-                const nameB = a?.attributes?.name?.toUpperCase(); // Groß-/Kleinschreibung ignorieren
+                const nameB = b?.attributes?.name?.toUpperCase(); // Groß-/Kleinschreibung ignorieren
                 if (nameA < nameB) {
                     return -1;
                 }
@@ -190,7 +190,7 @@ module.exports = function (RED: NodeAPI) {
             }
             const list = Object.values(node.properties)?.sort((a, b) => {
                 const nameA = a?.attributes?.name?.toUpperCase(); // Groß-/Kleinschreibung ignorieren
-                const nameB = a?.attributes?.name?.toUpperCase(); // Groß-/Kleinschreibung ignorieren
+                const nameB = b?.attributes?.name?.toUpperCase(); // Groß-/Kleinschreibung ignorieren
                 if (nameA < nameB) {
                     return -1;
                 }

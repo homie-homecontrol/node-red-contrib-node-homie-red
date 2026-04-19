@@ -23,6 +23,7 @@ Configuration Nodes:
 
 Palette Nodes:
 * Device (homie-device)
+* Device Log (homie-device-log)
 * Device Alert (homie-device-alert)
 * Property (homie-property)
 * Property Target (homie-property-target)
@@ -63,7 +64,7 @@ If a message is sent to the node the current device state will be emitted.
 
 __Output__
 
-Will send outgoing messages with the device state (init, ready, disconnected, sleeping, lost, alert).
+Will send outgoing messages with the device state (init, ready, disconnected, sleeping, lost).
 
 
 Outgoing messages include device state in the payload and device id as separate field:
@@ -158,6 +159,24 @@ Will emit alert events from the selected device.
 
 If an alert is cleared, `payload` becomes `null` and `action` is `clear`.
 
+### Device Log (homie-device-log)
+
+Represents log messages of a discovered homie device under <code>$log/&lt;level&gt;</code>.
+
+__Output__
+
+Will emit log events from the selected device.
+
+```json
+{
+    "device": "security",
+    "level": "warn",
+    "topic": "security/$log/warn",
+    "payload": "battery voltage unstable",
+    "message": "battery voltage unstable"
+}
+```
+
 ### Property Target (homie-property-target)
 
 Represents the `$target` value of a discovered homie property.
@@ -190,6 +209,7 @@ Palette Nodes:
 * Virtual Device (homie-vdevice)
 * vprop value (homie-vproperty-value-update)
 * vprop /set (homie-vproperty-set-command)
+* vdevice log (homie-vdevice-log-update)
 * vdevice alert (homie-vdevice-alert-update)
 * vprop target (homie-vproperty-target-update)
 
@@ -435,7 +455,7 @@ If no payload is specified only the current state will be emitted via the output
 
 __Output__
 
-Will send outgoing messages with the device state (init, ready, disconnected, sleeping, lost, alert).
+Will send outgoing messages with the device state (init, ready, disconnected, sleeping, lost).
 
 
 Outgoing messages include device state in the payload and device id as separate field:
@@ -493,6 +513,16 @@ Uses configured `alertId` (or `msg.alertId` if set).
 * If `msg.payload` contains a value, the alert is set.
 * If `msg.payload` is `null`/`undefined`, or `msg.clear === true`, the alert is cleared.
 
+### vdevice log (homie-vdevice-log-update)
+
+Publishes virtual device log messages to `$log/<level>`.
+
+__Input__
+
+Uses configured `level` (or `msg.level` if set).
+
+* `msg.payload` is converted to string and published as log message.
+
 ### vprop target (homie-vproperty-target-update)
 
 Updates the `$target` value of a virtual property.
@@ -507,7 +537,7 @@ __Input__
 ## Homie protocol
 - Topics now use `{topicRoot}/5/{device-id}/...` format (includes `/5/` version segment)
 - Device metadata is a single JSON `$description` document instead of individual MQTT topics
-- New device states: `alert` (in addition to `init`, `ready`, `disconnected`, `sleeping`, `lost`)
+- Device states remain `init`, `ready`, `disconnected`, `sleeping`, `lost`; alerts are exposed via `$alert/<id>`
 - Properties in output messages no longer include `tags` and `meta` fields (removed in v5)
 
 ## Smarthome namespace

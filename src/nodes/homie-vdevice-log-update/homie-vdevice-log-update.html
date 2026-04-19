@@ -1,0 +1,47 @@
+<script type="text/javascript">
+    RED.nodes.registerType('homie-vdevice-log-update', {
+        category: 'homie',
+        color: '#00796b',
+        defaults: {
+            deviceCfg: { value: "", type: "homie-vdevice-config", required: "true" },
+            name: { value: "" },
+            level: { value: "info", required: "true" }
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "font-awesome/fa-file-text-o",
+        inputLabels: 'publish log message',
+        paletteLabel: 'vdevice log',
+        align: 'right',
+        label: function () {
+            return this.name || this.level || "homie-vdevice-log-update";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="homie-vdevice-log-update">
+    <div class="form-row">
+        <label for="node-input-deviceCfg"><i class="fa fa-tag"></i> Select Device</label>
+        <input type="text" id="node-input-deviceCfg" placeholder="Device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-level"><i class="fa fa-tag"></i> Log Level</label>
+        <select id="node-input-level">
+            <option value="debug">debug</option>
+            <option value="info">info</option>
+            <option value="warn">warn</option>
+            <option value="error">error</option>
+            <option value="fatal">fatal</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="homie-vdevice-log-update">
+    <p>Publishes a log message for a virtual device to <code>$log/&lt;level&gt;</code>.</p>
+    <h3>Input</h3>
+    <p>Uses configured <code>level</code> (or <code>msg.level</code> override). <code>msg.payload</code> is converted to string and published as log message.</p>
+</script>
