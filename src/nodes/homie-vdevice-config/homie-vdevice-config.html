@@ -228,7 +228,7 @@ nodes:
                 {
                     <span class="hljs-attr">"id"</span>: <span class="hljs-string">"switch"</span>,
                     <span class="hljs-attr">"fromSmarthome"</span>: {
-                        <span class="hljs-attr">"type"</span>: <span class="hljs-string">"homie-homecontrol/v1/type=switch"</span>
+                        <span class="hljs-attr">"type"</span>: <span class="hljs-string">"hc-smarthome/v2/cap/switch"</span>
                     }
                 }
             ]
@@ -237,7 +237,7 @@ nodes:
         <p>Would result in a device with the following properties:
         <img src="docs/media/from-smarthome-example.png" alt="from-smarthome-example"></p>
         <pre><code class="lang-json">{
-            <span class="hljs-string">"type"</span>: <span class="hljs-string">"homie-homecontrol/v1/type=&lt;typename&gt;"</span>,
+            <span class="hljs-string">"type"</span>: <span class="hljs-string">"hc-smarthome/v2/cap/&lt;typename&gt;"</span>,
             <span class="hljs-string">"config"</span>: {
                 // typespecific <span class="hljs-keyword">node</span> <span class="hljs-title">configuration</span>
             }
@@ -246,21 +246,21 @@ nodes:
         <p><code>type</code></p>
         <ul>
         <li>The following types are supported:<ul>
-        <li><code>homie-homecontrol/v1/type=battery</code></li>
-        <li><code>homie-homecontrol/v1/type=switch</code></li>
-        <li><code>homie-homecontrol/v1/type=contact</code></li>
-        <li><code>homie-homecontrol/v1/type=weather</code></li>
-        <li><code>homie-homecontrol/v1/type=button</code></li>
-        <li><code>homie-homecontrol/v1/type=tiltsensor</code></li>
-        <li><code>homie-homecontrol/v1/type=motionsensor</code></li>
-        <li><code>homie-homecontrol/v1/type=thermostat</code></li>
-        <li><code>homie-homecontrol/v1/type=mediaplayer</code></li>
-        <li><code>homie-homecontrol/v1/type=powermeter</code></li>
-        <li><code>homie-homecontrol/v1/type=maintenance</code></li>
-        <li><code>homie-homecontrol/v1/type=dimmer</code></li>
-        <li><code>homie-homecontrol/v1/type=shutter</code></li>
-        <li><code>homie-homecontrol/v1/type=colorlight</code></li>
-        <li><code>homie-homecontrol/v1/type=text</code></li>
+        <li><code>hc-smarthome/v2/cap/battery</code></li>
+        <li><code>hc-smarthome/v2/cap/switch</code></li>
+        <li><code>hc-smarthome/v2/cap/contact</code></li>
+        <li><code>hc-smarthome/v2/cap/climate</code></li>
+        <li><code>hc-smarthome/v2/cap/button</code></li>
+        <li><code>hc-smarthome/v2/cap/tilt</code></li>
+        <li><code>hc-smarthome/v2/cap/motion</code></li>
+        <li><code>hc-smarthome/v2/cap/thermostat</code></li>
+        <li><code>hc-smarthome/v2/cap/mediaplayer</code></li>
+        <li><code>hc-smarthome/v2/cap/powermeter</code></li>
+        <li><code>hc-smarthome/v2/cap/maintenance</code></li>
+        <li><code>hc-smarthome/v2/cap/level</code></li>
+        <li><code>hc-smarthome/v2/cap/shutter</code></li>
+        <li><code>hc-smarthome/v2/cap/color</code></li>
+        <li><code>hc-smarthome/v2/cap/text</code></li>
         </ul>
         </li>
         </ul>
@@ -574,21 +574,21 @@ nodes:
     <li>Type: <code>string</code></li>
     <li><i id="#/definitions/SmarthomeType">path: #/definitions/SmarthomeType</i></li>
     <li>The value is restricted to the following: <ol>
-    <li><em>&quot;homie-homecontrol/v1/type=battery&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=switch&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=contact&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=weather&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=button&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=tiltsensor&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=motionsensor&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=thermostat&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=mediaplayer&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=powermeter&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=maintenance&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=dimmer&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=shutter&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=colorlight&quot;</em></li>
-    <li><em>&quot;homie-homecontrol/v1/type=text&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/battery&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/switch&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/contact&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/climate&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/button&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/tilt&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/motion&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/thermostat&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/mediaplayer&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/powermeter&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/maintenance&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/level&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/shutter&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/color&quot;</em></li>
+    <li><em>&quot;hc-smarthome/v2/cap/text&quot;</em></li>
     </ol>
     </li>
     </ul>
@@ -688,29 +688,29 @@ nodes:
     </ul>
     </li>
     </ul>
-    <p><strong><em>WeatherhNodePropertyConfig</em></strong></p>
+    <p><strong><em>ClimateNodePropertyConfig</em></strong></p>
     <ul>
     <li>Type: <code>object</code></li>
-    <li><i id="#/definitions/WeatherhNodePropertyConfig">path: #/definitions/WeatherhNodePropertyConfig</i></li>
+    <li><i id="#/definitions/ClimateNodePropertyConfig">path: #/definitions/ClimateNodePropertyConfig</i></li>
     <li>This schema <u>does not</u> accept additional properties.</li>
     <li><strong><em>Properties</em></strong><ul>
-    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
-    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/propertyOpts">path: #/definitions/WeatherhNodePropertyConfig/properties/propertyOpts</i></li>
+    <li><b id="#/definitions/ClimateNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/ClimateNodePropertyConfig/properties/propertyOpts">path: #/definitions/ClimateNodePropertyConfig/properties/propertyOpts</i></li>
     <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
     </ul>
     </li>
-    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/settable">settable</b><ul>
-    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/settable">path: #/definitions/WeatherhNodePropertyConfig/properties/settable</i></li>
+    <li><b id="#/definitions/ClimateNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/ClimateNodePropertyConfig/properties/settable">path: #/definitions/ClimateNodePropertyConfig/properties/settable</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/temperature">temperature</b> <code>required</code><ul>
+    <li><b id="#/definitions/ClimateNodePropertyConfig/properties/temperature">temperature</b> <code>required</code><ul>
     <li>Type: <code>boolean</code></li>
-    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/temperature">path: #/definitions/WeatherhNodePropertyConfig/properties/temperature</i></li>
+    <li><i id="#/definitions/ClimateNodePropertyConfig/properties/temperature">path: #/definitions/ClimateNodePropertyConfig/properties/temperature</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/tempUnit">tempUnit</b> <code>required</code><ul>
+    <li><b id="#/definitions/ClimateNodePropertyConfig/properties/tempUnit">tempUnit</b> <code>required</code><ul>
     <li>Type: <code>string</code></li>
-    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/tempUnit">path: #/definitions/WeatherhNodePropertyConfig/properties/tempUnit</i></li>
+    <li><i id="#/definitions/ClimateNodePropertyConfig/properties/tempUnit">path: #/definitions/ClimateNodePropertyConfig/properties/tempUnit</i></li>
     <li>The value is restricted to the following: <ol>
     <li><em>&quot;C&quot;</em></li>
     <li><em>&quot;F&quot;</em></li>
@@ -718,14 +718,14 @@ nodes:
     </li>
     </ul>
     </li>
-    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/humidity">humidity</b> <code>required</code><ul>
+    <li><b id="#/definitions/ClimateNodePropertyConfig/properties/humidity">humidity</b> <code>required</code><ul>
     <li>Type: <code>boolean</code></li>
-    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/humidity">path: #/definitions/WeatherhNodePropertyConfig/properties/humidity</i></li>
+    <li><i id="#/definitions/ClimateNodePropertyConfig/properties/humidity">path: #/definitions/ClimateNodePropertyConfig/properties/humidity</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/WeatherhNodePropertyConfig/properties/pressure">pressure</b> <code>required</code><ul>
+    <li><b id="#/definitions/ClimateNodePropertyConfig/properties/pressure">pressure</b> <code>required</code><ul>
     <li>Type: <code>boolean</code></li>
-    <li><i id="#/definitions/WeatherhNodePropertyConfig/properties/pressure">path: #/definitions/WeatherhNodePropertyConfig/properties/pressure</i></li>
+    <li><i id="#/definitions/ClimateNodePropertyConfig/properties/pressure">path: #/definitions/ClimateNodePropertyConfig/properties/pressure</i></li>
     </ul>
     </li>
     </ul>
@@ -811,19 +811,19 @@ nodes:
     </ol>
     </li>
     </ul>
-    <p><strong><em>TiltSensorNodePropertyConfig</em></strong></p>
+    <p><strong><em>TiltNodePropertyConfig</em></strong></p>
     <ul>
     <li>Type: <code>object</code></li>
-    <li><i id="#/definitions/TiltSensorNodePropertyConfig">path: #/definitions/TiltSensorNodePropertyConfig</i></li>
+    <li><i id="#/definitions/TiltNodePropertyConfig">path: #/definitions/TiltNodePropertyConfig</i></li>
     <li>This schema <u>does not</u> accept additional properties.</li>
     <li><strong><em>Properties</em></strong><ul>
-    <li><b id="#/definitions/TiltSensorNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
-    <li><i id="#/definitions/TiltSensorNodePropertyConfig/properties/propertyOpts">path: #/definitions/TiltSensorNodePropertyConfig/properties/propertyOpts</i></li>
+    <li><b id="#/definitions/TiltNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/TiltNodePropertyConfig/properties/propertyOpts">path: #/definitions/TiltNodePropertyConfig/properties/propertyOpts</i></li>
     <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
     </ul>
     </li>
-    <li><b id="#/definitions/TiltSensorNodePropertyConfig/properties/settable">settable</b><ul>
-    <li><i id="#/definitions/TiltSensorNodePropertyConfig/properties/settable">path: #/definitions/TiltSensorNodePropertyConfig/properties/settable</i></li>
+    <li><b id="#/definitions/TiltNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/TiltNodePropertyConfig/properties/settable">path: #/definitions/TiltNodePropertyConfig/properties/settable</i></li>
     </ul>
     </li>
     </ul>
@@ -843,37 +843,37 @@ nodes:
     </ul>
     </li>
     </ul>
-    <p><strong><em>MotionSensorhNodePropertyConfig</em></strong></p>
+    <p><strong><em>MotionNodePropertyConfig</em></strong></p>
     <ul>
     <li>Type: <code>object</code></li>
-    <li><i id="#/definitions/MotionSensorhNodePropertyConfig">path: #/definitions/MotionSensorhNodePropertyConfig</i></li>
+    <li><i id="#/definitions/MotionNodePropertyConfig">path: #/definitions/MotionNodePropertyConfig</i></li>
     <li>This schema <u>does not</u> accept additional properties.</li>
     <li><strong><em>Properties</em></strong><ul>
-    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
-    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/propertyOpts">path: #/definitions/MotionSensorhNodePropertyConfig/properties/propertyOpts</i></li>
+    <li><b id="#/definitions/MotionNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/MotionNodePropertyConfig/properties/propertyOpts">path: #/definitions/MotionNodePropertyConfig/properties/propertyOpts</i></li>
     <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
     </ul>
     </li>
-    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/settable">settable</b><ul>
-    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/settable">path: #/definitions/MotionSensorhNodePropertyConfig/properties/settable</i></li>
+    <li><b id="#/definitions/MotionNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/MotionNodePropertyConfig/properties/settable">path: #/definitions/MotionNodePropertyConfig/properties/settable</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/lux">lux</b> <code>required</code><ul>
+    <li><b id="#/definitions/MotionNodePropertyConfig/properties/lux">lux</b> <code>required</code><ul>
     <li>Type: <code>boolean</code></li>
-    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/lux">path: #/definitions/MotionSensorhNodePropertyConfig/properties/lux</i></li>
+    <li><i id="#/definitions/MotionNodePropertyConfig/properties/lux">path: #/definitions/MotionNodePropertyConfig/properties/lux</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotion">noMotion</b> <code>required</code><ul>
+    <li><b id="#/definitions/MotionNodePropertyConfig/properties/noMotion">noMotion</b> <code>required</code><ul>
     <li>Type: <code>boolean</code></li>
-    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotion">path: #/definitions/MotionSensorhNodePropertyConfig/properties/noMotion</i></li>
+    <li><i id="#/definitions/MotionNodePropertyConfig/properties/noMotion">path: #/definitions/MotionNodePropertyConfig/properties/noMotion</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals">noMotionIntervals</b> <code>required</code><ul>
+    <li><b id="#/definitions/MotionNodePropertyConfig/properties/noMotionIntervals">noMotionIntervals</b> <code>required</code><ul>
     <li>Type: <code>array</code></li>
-    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals">path: #/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals</i><ul>
+    <li><i id="#/definitions/MotionNodePropertyConfig/properties/noMotionIntervals">path: #/definitions/MotionNodePropertyConfig/properties/noMotionIntervals</i><ul>
     <li><strong><em>Items</em></strong></li>
     <li>Type: <code>number</code></li>
-    <li><i id="#/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals/items">path: #/definitions/MotionSensorhNodePropertyConfig/properties/noMotionIntervals/items</i></li>
+    <li><i id="#/definitions/MotionNodePropertyConfig/properties/noMotionIntervals/items">path: #/definitions/MotionNodePropertyConfig/properties/noMotionIntervals/items</i></li>
     </ul>
     </li>
     </ul>
@@ -1308,29 +1308,29 @@ nodes:
     </ul>
     </li>
     </ul>
-    <p><strong><em>DimmerNodePropertyConfig</em></strong></p>
+    <p><strong><em>LevelNodePropertyConfig</em></strong></p>
     <ul>
     <li>Type: <code>object</code></li>
-    <li><i id="#/definitions/DimmerNodePropertyConfig">path: #/definitions/DimmerNodePropertyConfig</i></li>
+    <li><i id="#/definitions/LevelNodePropertyConfig">path: #/definitions/LevelNodePropertyConfig</i></li>
     <li>This schema <u>does not</u> accept additional properties.</li>
     <li><strong><em>Properties</em></strong><ul>
-    <li><b id="#/definitions/DimmerNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
-    <li><i id="#/definitions/DimmerNodePropertyConfig/properties/propertyOpts">path: #/definitions/DimmerNodePropertyConfig/properties/propertyOpts</i></li>
+    <li><b id="#/definitions/LevelNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/LevelNodePropertyConfig/properties/propertyOpts">path: #/definitions/LevelNodePropertyConfig/properties/propertyOpts</i></li>
     <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
     </ul>
     </li>
-    <li><b id="#/definitions/DimmerNodePropertyConfig/properties/settable">settable</b><ul>
-    <li><i id="#/definitions/DimmerNodePropertyConfig/properties/settable">path: #/definitions/DimmerNodePropertyConfig/properties/settable</i></li>
+    <li><b id="#/definitions/LevelNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/LevelNodePropertyConfig/properties/settable">path: #/definitions/LevelNodePropertyConfig/properties/settable</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/DimmerNodePropertyConfig/properties/step">step</b> <code>required</code><ul>
+    <li><b id="#/definitions/LevelNodePropertyConfig/properties/step">step</b> <code>required</code><ul>
     <li>Type: <code>number</code></li>
-    <li><i id="#/definitions/DimmerNodePropertyConfig/properties/step">path: #/definitions/DimmerNodePropertyConfig/properties/step</i></li>
+    <li><i id="#/definitions/LevelNodePropertyConfig/properties/step">path: #/definitions/LevelNodePropertyConfig/properties/step</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/DimmerNodePropertyConfig/properties/stepToZero">stepToZero</b> <code>required</code><ul>
+    <li><b id="#/definitions/LevelNodePropertyConfig/properties/stepToZero">stepToZero</b> <code>required</code><ul>
     <li>Type: <code>boolean</code></li>
-    <li><i id="#/definitions/DimmerNodePropertyConfig/properties/stepToZero">path: #/definitions/DimmerNodePropertyConfig/properties/stepToZero</i></li>
+    <li><i id="#/definitions/LevelNodePropertyConfig/properties/stepToZero">path: #/definitions/LevelNodePropertyConfig/properties/stepToZero</i></li>
     </ul>
     </li>
     </ul>
@@ -1402,34 +1402,34 @@ nodes:
     </ul>
     </li>
     </ul>
-    <p><strong><em>ColorLightNodePropertyConfig</em></strong></p>
+    <p><strong><em>ColorNodePropertyConfig</em></strong></p>
     <ul>
     <li>Type: <code>object</code></li>
-    <li><i id="#/definitions/ColorLightNodePropertyConfig">path: #/definitions/ColorLightNodePropertyConfig</i></li>
+    <li><i id="#/definitions/ColorNodePropertyConfig">path: #/definitions/ColorNodePropertyConfig</i></li>
     <li>This schema <u>does not</u> accept additional properties.</li>
     <li><strong><em>Properties</em></strong><ul>
-    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
-    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/propertyOpts">path: #/definitions/ColorLightNodePropertyConfig/properties/propertyOpts</i></li>
+    <li><b id="#/definitions/ColorNodePropertyConfig/properties/propertyOpts">propertyOpts</b><ul>
+    <li><i id="#/definitions/ColorNodePropertyConfig/properties/propertyOpts">path: #/definitions/ColorNodePropertyConfig/properties/propertyOpts</i></li>
     <li>&#36;ref: <a href="#/definitions/HomiePropertyOptions">#/definitions/HomiePropertyOptions</a></li>
     </ul>
     </li>
-    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/settable">settable</b><ul>
-    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/settable">path: #/definitions/ColorLightNodePropertyConfig/properties/settable</i></li>
+    <li><b id="#/definitions/ColorNodePropertyConfig/properties/settable">settable</b><ul>
+    <li><i id="#/definitions/ColorNodePropertyConfig/properties/settable">path: #/definitions/ColorNodePropertyConfig/properties/settable</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/ctmin">ctmin</b> <code>required</code><ul>
+    <li><b id="#/definitions/ColorNodePropertyConfig/properties/ctmin">ctmin</b> <code>required</code><ul>
     <li>Type: <code>number</code></li>
-    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/ctmin">path: #/definitions/ColorLightNodePropertyConfig/properties/ctmin</i></li>
+    <li><i id="#/definitions/ColorNodePropertyConfig/properties/ctmin">path: #/definitions/ColorNodePropertyConfig/properties/ctmin</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/ctmax">ctmax</b> <code>required</code><ul>
+    <li><b id="#/definitions/ColorNodePropertyConfig/properties/ctmax">ctmax</b> <code>required</code><ul>
     <li>Type: <code>number</code></li>
-    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/ctmax">path: #/definitions/ColorLightNodePropertyConfig/properties/ctmax</i></li>
+    <li><i id="#/definitions/ColorNodePropertyConfig/properties/ctmax">path: #/definitions/ColorNodePropertyConfig/properties/ctmax</i></li>
     </ul>
     </li>
-    <li><b id="#/definitions/ColorLightNodePropertyConfig/properties/colorMode">colorMode</b><ul>
+    <li><b id="#/definitions/ColorNodePropertyConfig/properties/colorMode">colorMode</b><ul>
     <li>Type: <code>string</code></li>
-    <li><i id="#/definitions/ColorLightNodePropertyConfig/properties/colorMode">path: #/definitions/ColorLightNodePropertyConfig/properties/colorMode</i></li>
+    <li><i id="#/definitions/ColorNodePropertyConfig/properties/colorMode">path: #/definitions/ColorNodePropertyConfig/properties/colorMode</i></li>
     <li>The value is restricted to the following: <ol>
     <li><em>&quot;rgb&quot;</em></li>
     <li><em>&quot;hsv&quot;</em></li>

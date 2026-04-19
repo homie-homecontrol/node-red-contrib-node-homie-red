@@ -1,5 +1,5 @@
 import { NodeAPI, Node, NodeMessage } from "node-red";
-import { distinctUntilChanged, map, mapTo, Subject, switchMap, takeUntil } from "rxjs";
+import { distinctUntilChanged, map, Subject, switchMap, takeUntil } from "rxjs";
 import { IHomieConfig } from "../homie-config/homie-config";
 import { isNotNullish } from "node-homie/rx";
 import { notNullish } from "node-homie/model";
@@ -20,7 +20,7 @@ module.exports = function (RED: NodeAPI) {
         function makeMessage(prop: HomieProperty, value?: string, msg?: any): any {
             const newMsg = {
                 homieDevice: prop.device.id,
-                homieNode: prop.parent.id,
+                homieNode: prop.node.id,
                 homieProperty: prop.id,
                 topic: prop.pointer,
                 propertyAttrs: { ...prop.attributes },
